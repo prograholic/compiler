@@ -2,8 +2,19 @@
 find_package(Threads REQUIRED)
 
 
-add_executable(compiler_test test.cpp)
-target_link_libraries(compiler_test ${CMAKE_THREAD_LIBS_INIT} ${GTEST_LIBRARIES})
+set (TestSources
+	test.cpp
+	CheckParser.cpp
+)
+
+
+
+add_executable(compiler_test ${TestSources})
+target_link_libraries(compiler_test
+	${CMAKE_THREAD_LIBS_INIT}
+	${GTEST_LIBRARIES}
+	compiler_core
+)
 
 
 

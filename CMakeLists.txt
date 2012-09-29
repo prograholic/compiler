@@ -5,8 +5,18 @@ project(compiler)
 
 find_package(Boost REQUIRED)
 
-add_executable(compiler main.cpp)
 
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+
+add_subdirectory(core)
+
+
+add_executable(compiler main.cpp)
+target_link_libraries(compiler
+	compiler_core
+)
 
 
 
