@@ -28,9 +28,10 @@ ParserRuleState ParserRuleBase::currentState()
 }
 
 
-Parser::Parser(std::istream & inputStream)
+Parser::Parser(const ParserRuleList & parserRuleList, std::istream & inputStream)
 	: mInputStream(inputStream),
-	  mCurrentLocation()
+	  mCurrentLocation(),
+	  mParserRuleList(parserRuleList)
 {
 }
 
@@ -94,14 +95,6 @@ bool Parser::getNextLexeme(Lexeme & lexeme)
 
 	return false;
 }
-
-
-
-void Parser::addParserRule(ParserRulePtr parserRule)
-{
-	mParserRuleList.push_back(parserRule);
-}
-
 
 
 void Parser::updateCurrentLocation(int symbol)

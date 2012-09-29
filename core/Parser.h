@@ -35,7 +35,6 @@ struct Lexeme
 
 
 
-
 enum ParserRuleState
 {
 	PRS_Unknown,
@@ -75,24 +74,21 @@ protected:
 typedef boost::shared_ptr<ParserRuleBase> ParserRulePtr;
 
 
+typedef std::list<ParserRulePtr> ParserRuleList;
+
 
 class Parser : private boost::noncopyable
 {
 public:
-	Parser(std::istream & inputStream);
+	Parser(const ParserRuleList & parserRuleList, std::istream & inputStream);
 
 	bool getNextLexeme(Lexeme & lexeme);
-
-	void addParserRule(ParserRulePtr parserRule);
 
 private:
 
 	std::istream & mInputStream;
 
 	Location mCurrentLocation;
-
-
-	typedef std::list<ParserRulePtr> ParserRuleList;
 
 	ParserRuleList mParserRuleList;
 
