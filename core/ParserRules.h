@@ -43,6 +43,9 @@ public:
 
 
 typedef OneSymbolParserRule<';'> SemicolonParserRule;
+typedef OneSymbolParserRule<'('> OpenParenParserRule;
+typedef OneSymbolParserRule<')'> CloseParenParserRule;
+typedef OneSymbolParserRule<'*'> StarParserRule;
 
 
 #endif // COMPILER_CORE_PARSER_RULES_H

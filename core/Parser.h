@@ -12,13 +12,13 @@
 
 
 
-struct Location
+struct TokenLocation
 {
 	std::string fileName;
 	size_t line;
 	size_t colon;
 
-	Location()
+	TokenLocation()
 		: fileName(),
 		  line(0),
 		  colon(0)
@@ -26,11 +26,11 @@ struct Location
 };
 
 
-struct Lexeme
+struct Token
 {
 	std::string lexeme;
 
-	Location loc;
+	TokenLocation loc;
 };
 
 
@@ -82,13 +82,13 @@ class Parser : private boost::noncopyable
 public:
 	Parser(const ParserRuleList & parserRuleList, std::istream & inputStream);
 
-	bool getNextLexeme(Lexeme & lexeme);
+	bool getNextToken(Token & token);
 
 private:
 
 	std::istream & mInputStream;
 
-	Location mCurrentLocation;
+	TokenLocation mCurrentLocation;
 
 	ParserRuleList mParserRuleList;
 

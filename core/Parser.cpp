@@ -37,7 +37,7 @@ Parser::Parser(const ParserRuleList & parserRuleList, std::istream & inputStream
 
 
 
-bool Parser::getNextLexeme(Lexeme & lexeme)
+bool Parser::getNextToken(Token & token)
 {
 	skipSpaces();
 
@@ -55,9 +55,9 @@ bool Parser::getNextLexeme(Lexeme & lexeme)
 		return false;
 	}
 
-	parserRule->init(lexeme.lexeme);
+	parserRule->init(token.lexeme);
 
-	lexeme.loc = mCurrentLocation;
+	token.loc = mCurrentLocation;
 
 	while ((symbol = mInputStream.get()) != std::istream::traits_type::eof())
 	{
