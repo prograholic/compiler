@@ -19,9 +19,11 @@ public:
 	{
 		parserRuleList.push_back(boost::make_shared<AlphaNumParserRule>());
 		parserRuleList.push_back(boost::make_shared<SemicolonParserRule>());
+		parserRuleList.push_back(boost::make_shared<StarParserRule>());
 		parserRuleList.push_back(boost::make_shared<OpenParenParserRule>());
 		parserRuleList.push_back(boost::make_shared<CloseParenParserRule>());
-		parserRuleList.push_back(boost::make_shared<StarParserRule>());
+		parserRuleList.push_back(boost::make_shared<OpenBraceParserRule>());
+		parserRuleList.push_back(boost::make_shared<CloseBraceParserRule>());
 	}
 
 
@@ -131,6 +133,47 @@ TEST_F(CheckParser, CheckPositionsOfDeclarationVoidFuncionWithPointerToIntArgume
 	ASSERT_TRUE(parser.getNextToken(semicolonToken));
 	EXPECT_TRUE(tokenChecking(semicolonToken, ";", 0, 18));
 
+
+	Token unusedToken;
+	EXPECT_FALSE(parser.getNextToken(unusedToken));
+}
+
+
+TEST_F(CheckParser, CheckPositionsOfRealisationOfVoidFunctionWithoutArgumentsAndWithNewLines)
+{
+	const char sample [] =
+			"void func()\n"
+			"{\n"
+			"}\n";
+
+	std::istringstream inputStream(sample);
+
+	Parser parser(parserRuleList, inputStream);
+
+	Token voidToken;
+	ASSERT_TRUE(parser.getNextToken(voidToken));
+	EXPECT_TRUE(tokenChecking(voidToken, "void", 0, 0));
+
+
+	Token funcToken;
+	ASSERT_TRUE(parser.getNextToken(funcToken));
+	EXPECT_TRUE(tokenChecking(funcToken, "func", 0, 5));
+
+	Token openParenToken;
+	ASSERT_TRUE(parser.getNextToken(openParenToken));
+	EXPECT_TRUE(tokenChecking(openParenToken, "(", 0, 9));
+
+	Token closeParenToken;
+	ASSERT_TRUE(parser.getNextToken(closeParenToken));
+	EXPECT_TRUE(tokenChecking(closeParenToken, ")", 0, 10));
+
+	Token openBraceToken;
+	ASSERT_TRUE(parser.getNextToken(openBraceToken));
+	EXPECT_TRUE(tokenChecking(openBraceToken, "{", 1, 0));
+
+	Token closeBraceToken;
+	ASSERT_TRUE(parser.getNextToken(closeBraceToken));
+	EXPECT_TRUE(tokenChecking(closeBraceToken, "}", 2, 0));
 
 	Token unusedToken;
 	EXPECT_FALSE(parser.getNextToken(unusedToken));
