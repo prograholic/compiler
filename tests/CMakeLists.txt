@@ -5,6 +5,7 @@ find_package(Threads REQUIRED)
 set (TestSources
 	test.cpp
 	CheckParser.cpp
+	CheckDoubleQuotedParserRule.cpp
 )
 
 

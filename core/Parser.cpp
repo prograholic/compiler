@@ -38,23 +38,30 @@ bool operator == (const TokenLocation & tl1, const TokenLocation & tl2)
 
 Token::Token()
 	: lexeme(),
-	  loc()
+	  location(),
+	  type(TK_Unknown)
 {}
 
-Token::Token(const std::string & l, const TokenLocation & lc)
+Token::Token(TokenType tokenType, const std::string & l, const TokenLocation & loc)
 	: lexeme(l),
-	  loc(lc)
+	  location(loc),
+	  type(tokenType)
 {}
 
 
 bool operator == (const Token & t1, const Token & t2)
 {
+	if (t1.type != t2.type)
+	{
+		return false;
+	}
+
 	if (t1.lexeme != t2.lexeme)
 	{
 		return false;
 	}
 
-	if (t1.loc != t2.loc)
+	if (t1.location != t2.location)
 	{
 		return false;
 	}
@@ -68,9 +75,10 @@ bool operator == (const Token & t1, const Token & t2)
 
 
 
-ParserRuleBase::ParserRuleBase()
+ParserRuleBase::ParserRuleBase(TokenType tokenType)
 	: mHolder(0),
-	  mCurrentState(PRS_Unknown)
+	  mCurrentState(PRS_Unknown),
+	  mTokenType(tokenType)
 {
 }
 
@@ -78,6 +86,17 @@ ParserRuleBase::~ParserRuleBase()
 {
 }
 
+
+
+void ParserRuleBase::setTokenType(Token & token)
+{
+	token.type = mTokenType;
+}
+
+TokenType ParserRuleBase::tokenType() const
+{
+
+}
 
 
 void ParserRuleBase::init(std::string & holder)
@@ -91,6 +110,13 @@ ParserRuleState ParserRuleBase::currentState()
 {
 	return mCurrentState;
 }
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 
 Parser::Parser(const ParserRuleList & parserRuleList, std::istream & inputStream)
@@ -122,7 +148,7 @@ bool Parser::getNextToken(Token & token)
 
 	parserRule->init(token.lexeme);
 
-	token.loc = mCurrentLocation;
+	token.location = mCurrentLocation;
 
 	while ((symbol = mInputStream.get()) != std::istream::traits_type::eof())
 	{
@@ -155,6 +181,7 @@ bool Parser::getNextToken(Token & token)
 	{
 	case PRS_Finished:
 	case PRS_FinishedWithUnget:
+		parserRule->setTokenType(token);
 		return true;
 	}
 

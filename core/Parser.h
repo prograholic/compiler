@@ -32,6 +32,27 @@ inline bool operator != (const TokenLocation & tl1, const TokenLocation & tl2)
 
 
 
+enum TokenType
+{
+	TK_Unknown,
+
+	TK_AlphaNum,
+	TK_DoubleQuotedText,
+
+	TK_Semicolon,
+	TK_Star,
+	TK_Assignment,
+
+	TK_OpenParen,
+	TK_CloseParen,
+
+	TK_OpenBrace,
+	TK_CloseBrace,
+
+	TK_OpenBracket,
+	TK_CloseBracket
+};
+
 
 
 
@@ -39,11 +60,13 @@ struct Token
 {
 	std::string lexeme;
 
-	TokenLocation loc;
+	TokenLocation location;
+
+	TokenType type;
 
 	Token();
 
-	Token(const std::string & l, const TokenLocation & lc);
+	Token(TokenType tokenType, const std::string & l, const TokenLocation & loc);
 };
 
 bool operator == (const Token & t1, const Token & t2);
@@ -73,12 +96,16 @@ class ParserRuleBase : private boost::noncopyable
 {
 public:
 
-	ParserRuleBase();
+	ParserRuleBase(TokenType tokenType);
 
 	virtual ~ParserRuleBase();
 
 
 	ParserRuleState currentState();
+
+	void setTokenType(Token & token);
+
+	TokenType tokenType() const;
 
 	virtual void init(std::string & holder);
 
@@ -87,10 +114,12 @@ public:
 
 	virtual ParserRuleState consumeSymbol(int symbol) = 0;
 
+
 protected:
 
 	std::string * mHolder;
 	ParserRuleState mCurrentState;
+	TokenType mTokenType;
 
 };
 
