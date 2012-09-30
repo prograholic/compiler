@@ -3,6 +3,71 @@
 #include <boost/assert.hpp>
 
 
+TokenLocation::TokenLocation()
+	: line(0),
+	  colon(0)
+{}
+
+TokenLocation::TokenLocation(size_t l, size_t c)
+	: line(l),
+	  colon(c)
+{}
+
+
+bool operator == (const TokenLocation & tl1, const TokenLocation & tl2)
+{
+	if (tl1.colon != tl2.colon)
+	{
+		return false;
+	}
+
+	if (tl1.line != tl2.line)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+Token::Token()
+	: lexeme(),
+	  loc()
+{}
+
+Token::Token(const std::string & l, const TokenLocation & lc)
+	: lexeme(l),
+	  loc(lc)
+{}
+
+
+bool operator == (const Token & t1, const Token & t2)
+{
+	if (t1.lexeme != t2.lexeme)
+	{
+		return false;
+	}
+
+	if (t1.loc != t2.loc)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 ParserRuleBase::ParserRuleBase()
 	: mHolder(0),
 	  mCurrentState(PRS_Unknown)

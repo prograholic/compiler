@@ -14,16 +14,25 @@
 
 struct TokenLocation
 {
-	std::string fileName;
 	size_t line;
 	size_t colon;
 
-	TokenLocation()
-		: fileName(),
-		  line(0),
-		  colon(0)
-	{}
+	TokenLocation();
+
+	TokenLocation(size_t l, size_t c);
 };
+
+
+bool operator == (const TokenLocation & tl1, const TokenLocation & tl2);
+
+inline bool operator != (const TokenLocation & tl1, const TokenLocation & tl2)
+{
+	return !(tl1 == tl2);
+}
+
+
+
+
 
 
 struct Token
@@ -31,7 +40,22 @@ struct Token
 	std::string lexeme;
 
 	TokenLocation loc;
+
+	Token();
+
+	Token(const std::string & l, const TokenLocation & lc);
 };
+
+bool operator == (const Token & t1, const Token & t2);
+
+inline bool operator != (const Token & t1, const Token & t2)
+{
+	return !(t1 == t2);
+}
+
+
+
+
 
 
 
