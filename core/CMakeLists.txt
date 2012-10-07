@@ -1,6 +1,6 @@
 set (CompilerCoreSources
-	TokenLocation.cpp
-	TokenLocation.h
+	Location.cpp
+	Location.h
 
 	ErrorCodes.h
 
@@ -16,8 +16,20 @@ set (CompilerCoreSources
 	ParserRules.cpp
 	ParserRules.h
 
+	InputStreamBase.cpp
+	InputStreamBase.h
+
+	BufferedInputStream.cpp
+	BufferedInputStream.h
+
+	StdInputStreamAdapter.cpp
+	StdInputStreamAdapter.h
+
 	Parser.cpp
 	Parser.h
+
+	ASTBuilder.cpp
+	ASTBuilder.h
 )
 
 

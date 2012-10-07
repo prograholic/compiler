@@ -3,11 +3,12 @@
 
 #include "core/ParserRuleBase.h"
 #include "core/Error.h"
+#include "core/BufferedInputStream.h"
 
 class Parser : private boost::noncopyable
 {
 public:
-	Parser(const ParserRuleList & parserRuleList, std::istream & inputStream);
+	Parser(const ParserRuleList & parserRuleList, BufferedInputStream & inputStream);
 
 	bool getNextToken(Token & token);
 
@@ -15,9 +16,7 @@ public:
 
 private:
 
-	std::istream & mInputStream;
-
-	TokenLocation mCurrentLocation;
+	BufferedInputStream & mInputStream;
 
 	ParserRuleList mParserRuleList;
 
@@ -25,11 +24,6 @@ private:
 
 
 	ParserRulePtr getParserRule(int firstSymbol) const;
-
-	void updateCurrentLocation(int symbol);
-
-	void skipSpaces();
-
 
 	bool returnWithError(ErrorCodes ec);
 

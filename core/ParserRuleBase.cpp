@@ -2,6 +2,7 @@
 
 ParserRuleBase::ParserRuleBase(TokenType tokenType)
 	: mHolder(0),
+	  mInputStream(0),
 	  mCurrentState(PRS_Unknown),
 	  mTokenType(tokenType),
 	  mLastError(EC_NoError)
@@ -31,10 +32,13 @@ ErrorCodes ParserRuleBase::lastError() const
 
 
 
-void ParserRuleBase::init(std::string & holder)
+void ParserRuleBase::init(BufferedInputStream & inputStream, std::string & holder)
 {
 	mHolder = &holder;
+	mInputStream = &inputStream;
 	mCurrentState = PRS_Unknown;
+
+	inputStream.markCurrentScope();
 }
 
 

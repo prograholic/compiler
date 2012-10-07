@@ -2,12 +2,11 @@
 
 #include <sstream>
 
-#include <boost/smart_ptr/make_shared.hpp>
-#include <boost/scoped_ptr.hpp>
-
 #include "core/Parser.h"
 
 #include "core/ParserRules.h"
+#include "core/StdInputStreamAdapter.h"
+#include "core/BufferedInputStream.h"
 
 class CheckParser : public ::testing::Test
 {
@@ -15,24 +14,7 @@ public:
 
 	void SetUp()
 	{
-		parserRuleList.push_back(boost::make_shared<AlphaNumParserRule>());
-		parserRuleList.push_back(boost::make_shared<DoubleQuotedTextParserRule>());
-
-		parserRuleList.push_back(boost::make_shared<SemicolonParserRule>());
-
-		parserRuleList.push_back(boost::make_shared<StarParserRule>());
-
-		parserRuleList.push_back(boost::make_shared<AssignmentParserRule>());
-
-
-		parserRuleList.push_back(boost::make_shared<OpenParenParserRule>());
-		parserRuleList.push_back(boost::make_shared<CloseParenParserRule>());
-
-		parserRuleList.push_back(boost::make_shared<OpenBraceParserRule>());
-		parserRuleList.push_back(boost::make_shared<CloseBraceParserRule>());
-
-		parserRuleList.push_back(boost::make_shared<OpenBracketParserRule>());
-		parserRuleList.push_back(boost::make_shared<CloseBracketParserRule>());
+		parserRuleList = getParserRuleList();
 	}
 
 
@@ -85,8 +67,11 @@ TEST_F(CheckParser, CheckPositionsOfDeclarationIntVariable)
 	const char sample [] = "int x;";
 
 	std::istringstream inputStream(sample);
+	StdInputStreamAdapter stdInputStreamAdapter(&inputStream);
+	BufferedInputStream bufferedInputStream(stdInputStreamAdapter);
 
-	Parser parser(parserRuleList, inputStream);
+
+	Parser parser(parserRuleList, bufferedInputStream);
 
 	Token intToken;
 	ASSERT_TRUE(parser.getNextToken(intToken));
@@ -112,8 +97,11 @@ TEST_F(CheckParser, CheckPositionsOfDeclarationVoidFuncionWithPointerToIntArgume
 {
 	const char sample [] = "void func(int * y);";
 	std::istringstream inputStream(sample);
+	StdInputStreamAdapter stdInputStreamAdapter(&inputStream);
+	BufferedInputStream bufferedInputStream(stdInputStreamAdapter);
 
-	Parser parser(parserRuleList, inputStream);
+
+	Parser parser(parserRuleList, bufferedInputStream);
 
 	Token voidToken;
 	ASSERT_TRUE(parser.getNextToken(voidToken));
@@ -162,8 +150,11 @@ TEST_F(CheckParser, CheckPositionsOfRealisationOfVoidFunctionWithoutArgumentsAnd
 			"}\n";
 
 	std::istringstream inputStream(sample);
+	StdInputStreamAdapter stdInputStreamAdapter(&inputStream);
+	BufferedInputStream bufferedInputStream(stdInputStreamAdapter);
 
-	Parser parser(parserRuleList, inputStream);
+
+	Parser parser(parserRuleList, bufferedInputStream);
 
 	Token voidToken;
 	ASSERT_TRUE(parser.getNextToken(voidToken));
@@ -203,8 +194,11 @@ TEST_F(CheckParser, CheckPositionsOfArrayOfCharDeclaration)
 	 */
 	const char sample [] = "const char s [] = \"abc\\\" def\";";
 	std::istringstream inputStream(sample);
+	StdInputStreamAdapter stdInputStreamAdapter(&inputStream);
+	BufferedInputStream bufferedInputStream(stdInputStreamAdapter);
 
-	Parser parser(parserRuleList, inputStream);
+
+	Parser parser(parserRuleList, bufferedInputStream);
 
 	Token constToken;
 	ASSERT_TRUE(parser.getNextToken(constToken));

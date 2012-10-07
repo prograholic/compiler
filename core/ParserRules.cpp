@@ -1,5 +1,7 @@
 #include "core/ParserRules.h"
 
+#include <boost/smart_ptr/make_shared.hpp>
+
 
 
 AlphaNumParserRule::AlphaNumParserRule()
@@ -13,20 +15,27 @@ bool AlphaNumParserRule::firstSymbolFits(int firstSymbol)
 	return std::isalnum(firstSymbol);
 }
 
-ParserRuleState AlphaNumParserRule::consumeSymbol(int symbol)
+ParserRuleState AlphaNumParserRule::consumeSymbol()
 {
+	int symbol = mInputStream->peek();
+
 	if (std::isalnum(symbol))
 	{
 		mHolder->push_back(symbol);
 		mCurrentState = PRS_Intermediate;
-	}
-	else if (symbol == std::istream::traits_type::eof())
-	{
-		mCurrentState = PRS_Finished;
+
+		mInputStream->next();
 	}
 	else
 	{
-		mCurrentState = PRS_FinishedWithUnget;
+		if (mHolder->empty())
+		{
+			mCurrentState = PRS_Inapropriate;
+		}
+		else
+		{
+			mCurrentState = PRS_Finished;
+		}
 	}
 
 	return mCurrentState;
@@ -50,8 +59,10 @@ bool DoubleQuotedTextParserRule::firstSymbolFits(int firstSymbol)
 	return firstSymbol == '\"';
 }
 
-ParserRuleState DoubleQuotedTextParserRule::consumeSymbol(int symbol)
+ParserRuleState DoubleQuotedTextParserRule::consumeSymbol()
 {
+	int symbol = mInputStream->next();
+
 	switch (mInternalState)
 	{
 	case IS_WaitFirstDoubleQuote:
@@ -365,3 +376,52 @@ void DoubleQuotedTextParserRule::consumeHexValue1(int symbol)
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+RelationOperatorParserRule::RelationOperatorParserRule()
+	: ParserRuleBase(TK_RelationOperator)
+{
+
+}
+
+
+bool RelationOperatorParserRule::firstSymbolFits(int firstSymbol)
+{
+
+}
+
+ParserRuleState RelationOperatorParserRule::consumeSymbol()
+{
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+ParserRuleList getParserRuleList()
+{
+	ParserRuleList result;
+
+	result.push_back(boost::make_shared<AlphaNumParserRule>());
+	result.push_back(boost::make_shared<DoubleQuotedTextParserRule>());
+
+	result.push_back(boost::make_shared<SemicolonParserRule>());
+
+	result.push_back(boost::make_shared<StarParserRule>());
+
+	result.push_back(boost::make_shared<AssignmentParserRule>());
+
+
+	result.push_back(boost::make_shared<OpenParenParserRule>());
+	result.push_back(boost::make_shared<CloseParenParserRule>());
+
+	result.push_back(boost::make_shared<OpenBraceParserRule>());
+	result.push_back(boost::make_shared<CloseBraceParserRule>());
+
+	result.push_back(boost::make_shared<OpenBracketParserRule>());
+	result.push_back(boost::make_shared<CloseBracketParserRule>());
+
+	result.push_back(boost::make_shared<RelationOperatorParserRule>());
+
+	return result;
+}

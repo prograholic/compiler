@@ -1,20 +1,20 @@
-#include "TokenLocation.h"
+#include "core/Location.h"
 
 
 
 
-TokenLocation::TokenLocation()
+Location::Location()
 	: line(0),
 	  colon(0)
 {}
 
-TokenLocation::TokenLocation(size_t l, size_t c)
+Location::Location(size_t l, size_t c)
 	: line(l),
 	  colon(c)
 {}
 
 
-bool operator == (const TokenLocation & tl1, const TokenLocation & tl2)
+bool operator == (const Location & tl1, const Location & tl2)
 {
 	if (tl1.colon != tl2.colon)
 	{

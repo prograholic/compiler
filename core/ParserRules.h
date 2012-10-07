@@ -13,7 +13,7 @@ public:
 
 	virtual bool firstSymbolFits(int firstSymbol);
 
-	virtual ParserRuleState consumeSymbol(int symbol);
+	virtual ParserRuleState consumeSymbol();
 
 };
 
@@ -26,7 +26,7 @@ public:
 
 	virtual bool firstSymbolFits(int firstSymbol);
 
-	virtual ParserRuleState consumeSymbol(int symbol);
+	virtual ParserRuleState consumeSymbol();
 
 private:
 
@@ -78,8 +78,10 @@ public:
 		return firstSymbol == Symbol;
 	}
 
-	virtual ParserRuleState consumeSymbol(int symbol)
+	virtual ParserRuleState consumeSymbol()
 	{
+		int symbol = mInputStream->next();
+
 		if (symbol == Symbol)
 		{
 			mHolder->push_back(symbol);
@@ -110,6 +112,25 @@ typedef OneSymbolParserRule<'}', TK_CloseBrace,   EC_WrongCloseBraceSymbol>   Cl
 
 typedef OneSymbolParserRule<'[', TK_OpenBracket,  EC_WrongOpenBracketSymbol>  OpenBracketParserRule;
 typedef OneSymbolParserRule<']', TK_CloseBracket, EC_WrongCloseBracketSymbol> CloseBracketParserRule;
+
+
+
+class RelationOperatorParserRule : public ParserRuleBase
+{
+public:
+
+	RelationOperatorParserRule();
+
+	virtual bool firstSymbolFits(int firstSymbol);
+
+	virtual ParserRuleState consumeSymbol();
+
+};
+
+
+
+
+ParserRuleList getParserRuleList();
 
 
 

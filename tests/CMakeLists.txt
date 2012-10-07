@@ -6,6 +6,7 @@ set (TestSources
 	test.cpp
 	CheckParser.cpp
 	CheckDoubleQuotedParserRule.cpp
+	CheckASTBuilder.cpp
 )
 
 

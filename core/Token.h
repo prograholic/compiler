@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "core/TokenLocation.h"
+#include "core/Location.h"
 
 
 enum TokenType
@@ -24,7 +24,10 @@ enum TokenType
 	TK_CloseBrace,
 
 	TK_OpenBracket,
-	TK_CloseBracket
+	TK_CloseBracket,
+
+
+	TK_RelationOperator
 };
 
 
@@ -33,13 +36,13 @@ struct Token
 {
 	std::string lexeme;
 
-	TokenLocation location;
+	Location location;
 
 	TokenType type;
 
 	Token();
 
-	Token(TokenType tokenType, const std::string & l, const TokenLocation & loc);
+	Token(TokenType tokenType, const std::string & l, const Location & loc);
 };
 
 bool operator == (const Token & t1, const Token & t2);

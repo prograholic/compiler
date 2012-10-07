@@ -3,11 +3,11 @@
 
 #include <list>
 
-#include <boost/noncopyable.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 
 #include "core/Token.h"
 #include "core/ErrorCodes.h"
+#include "core/BufferedInputStream.h"
 
 
 enum ParserRuleState
@@ -15,7 +15,6 @@ enum ParserRuleState
 	PRS_Unknown,
 	PRS_Intermediate,
 	PRS_Finished,
-	PRS_FinishedWithUnget,
 	PRS_Inapropriate
 };
 
@@ -38,16 +37,17 @@ public:
 
 	ErrorCodes lastError() const;
 
-	virtual void init(std::string & holder);
-
+	virtual void init(BufferedInputStream & inputStream, std::string & holder);
 
 	virtual bool firstSymbolFits(int firstSymbol) = 0;
 
-	virtual ParserRuleState consumeSymbol(int symbol) = 0;
+	virtual ParserRuleState consumeSymbol() = 0;
 
 protected:
 
 	std::string * mHolder;
+	BufferedInputStream * mInputStream;
+
 	ParserRuleState mCurrentState;
 	TokenType mTokenType;
 	ErrorCodes mLastError;

@@ -1,17 +1,17 @@
 #ifndef COMPILER_CORE_ERROR_H
 #define COMPILER_CORE_ERROR_H
 
-#include "core/TokenLocation.h"
+#include "core/Location.h"
 #include "core/ErrorCodes.h"
 
 
 struct Error
 {
-	Error(ErrorCodes errorCode, const TokenLocation & location);
+	explicit Error(ErrorCodes errorCode, const Location & location = Location());
 
 	ErrorCodes errorCode;
 
-	TokenLocation location;
+	Location location;
 };
 
 

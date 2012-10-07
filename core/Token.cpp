@@ -1,4 +1,4 @@
-#include "Token.h"
+#include "core/Token.h"
 
 
 Token::Token()
@@ -7,7 +7,7 @@ Token::Token()
 	  type(TK_Unknown)
 {}
 
-Token::Token(TokenType tokenType, const std::string & l, const TokenLocation & loc)
+Token::Token(TokenType tokenType, const std::string & l, const Location & loc)
 	: lexeme(l),
 	  location(loc),
 	  type(tokenType)

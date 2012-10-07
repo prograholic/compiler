@@ -7,11 +7,10 @@
 
 
 
-Parser::Parser(const ParserRuleList & parserRuleList, std::istream & inputStream)
+Parser::Parser(const ParserRuleList & parserRuleList, BufferedInputStream & inputStream)
 	: mInputStream(inputStream),
-	  mCurrentLocation(),
 	  mParserRuleList(parserRuleList),
-	  mLastError(EC_NoError, mCurrentLocation)
+	  mLastError(EC_NoError)
 {
 }
 
@@ -19,10 +18,10 @@ Parser::Parser(const ParserRuleList & parserRuleList, std::istream & inputStream
 
 bool Parser::getNextToken(Token & token)
 {
-	skipSpaces();
+	mInputStream.skipSpaces();
 
 	int symbol = mInputStream.peek();
-	if (symbol == std::istream::traits_type::eof())
+	if (symbol == InputStreamBase::EndOfFile)
 	{
 		/// end of stream
 		return false;
@@ -34,41 +33,28 @@ bool Parser::getNextToken(Token & token)
 		return returnWithError(EC_NoParserRule);
 	}
 
-	parserRule->init(token.lexeme);
+	parserRule->init(mInputStream, token.lexeme);
 
-	token.location = mCurrentLocation;
+	token.location = mInputStream.currentLocation();
 
-	while ((symbol = mInputStream.get()) != std::istream::traits_type::eof())
+	while ((symbol = mInputStream.peek()) != InputStreamBase::EndOfFile)
 	{
-		const ParserRuleState parserRuleState = parserRule->consumeSymbol(symbol);
+		const ParserRuleState parserRuleState = parserRule->consumeSymbol();
 
-		if (parserRuleState != PRS_Intermediate)
+		if (parserRuleState == PRS_Finished)
 		{
-			if (parserRuleState == PRS_FinishedWithUnget)
-			{
-				mInputStream.unget();
-			}
-			else
-			{
-				updateCurrentLocation(symbol);
-			}
 			break;
 		}
-
-		updateCurrentLocation(symbol);
+		else if (parserRuleState == PRS_Inapropriate)
+		{
+			mInputStream.unwind();
+			break;
+		}
 	}
-
-	if (symbol == std::istream::traits_type::eof())
-	{
-		/// process EOF
-		parserRule->consumeSymbol(symbol);
-	}
-
 
 	switch (parserRule->currentState())
 	{
 	case PRS_Finished:
-	case PRS_FinishedWithUnget:
 		parserRule->updateTokenTypeForToken(token);
 		return true;
 	}
@@ -90,22 +76,6 @@ Error Parser::lastError() const
 
 
 
-
-
-void Parser::updateCurrentLocation(int symbol)
-{
-	if (symbol == '\n')
-	{
-		++mCurrentLocation.line;
-		mCurrentLocation.colon = 0;
-	}
-	else
-	{
-		++mCurrentLocation.colon;
-	}
-}
-
-
 ParserRulePtr Parser::getParserRule(int firstSymbol) const
 {
 	for (ParserRuleList::const_iterator it = mParserRuleList.begin(); it != mParserRuleList.end(); ++it)
@@ -121,26 +91,10 @@ ParserRulePtr Parser::getParserRule(int firstSymbol) const
 
 
 
-void Parser::skipSpaces()
-{
-	int symbol;
-
-	while ((symbol = mInputStream.get()) != std::istream::traits_type::eof())
-	{
-		if (!std::isspace(symbol))
-		{
-			mInputStream.unget();
-			return;
-		}
-		updateCurrentLocation(symbol);
-	}
-}
-
-
 bool Parser::returnWithError(ErrorCodes ec)
 {
 	mLastError.errorCode = ec;
-	mLastError.location = mCurrentLocation;
+	mLastError.location = mInputStream.currentLocation();
 
 	return false;
 }
