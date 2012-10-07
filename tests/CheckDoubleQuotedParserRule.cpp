@@ -1,39 +1,24 @@
-#include <gtest/gtest.h>
-
-#include "core/ParserRules.h"
-#include "core/StdInputStreamAdapter.h"
-#include "core/BufferedInputStream.h"
+#include "CheckParserRule.h"
 
 
-class CheckDoubleQuotedParserRule : public ::testing::Test
+
+class CheckDoubleQuotedParserRule : public CheckParserRule
 {
 public:
 
 
-	DoubleQuotedTextParserRule rule;
-	StdInputStreamAdapter stdInputStreamAdapter;
-	BufferedInputStream bufferedInputStream;
-
-	std::string result;
-
-
-
-	CheckDoubleQuotedParserRule()
-		: ::testing::Test(),
-		  rule(),
-		  stdInputStreamAdapter(0),
-		  bufferedInputStream(stdInputStreamAdapter)
-	{
-	}
-
-
-
 	virtual void SetUp()
 	{
-		result.clear();
+		CheckParserRule::SetUp();
+
 		rule.init(bufferedInputStream, result);
 	}
+
+
+	DoubleQuotedTextParserRule rule;
+
 };
+
 
 TEST_F(CheckDoubleQuotedParserRule, CheckEmptyString)
 {

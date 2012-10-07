@@ -37,7 +37,9 @@ public:
 
 	ErrorCodes lastError() const;
 
-	virtual void init(BufferedInputStream & inputStream, std::string & holder);
+	void init(BufferedInputStream & inputStream, std::string & holder);
+
+
 
 	virtual bool firstSymbolFits(int firstSymbol) = 0;
 
@@ -51,6 +53,9 @@ protected:
 	ParserRuleState mCurrentState;
 	TokenType mTokenType;
 	ErrorCodes mLastError;
+
+
+	virtual void internalInit();
 
 };
 

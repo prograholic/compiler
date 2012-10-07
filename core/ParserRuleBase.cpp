@@ -39,6 +39,8 @@ void ParserRuleBase::init(BufferedInputStream & inputStream, std::string & holde
 	mCurrentState = PRS_Unknown;
 
 	inputStream.markCurrentScope();
+
+	this->internalInit();
 }
 
 
@@ -46,3 +48,14 @@ ParserRuleState ParserRuleBase::currentState()
 {
 	return mCurrentState;
 }
+
+
+
+
+
+//////////////////////// Private implementation ////////////////////////
+
+
+
+void ParserRuleBase::internalInit()
+{}

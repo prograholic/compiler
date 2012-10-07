@@ -387,12 +387,98 @@ RelationOperatorParserRule::RelationOperatorParserRule()
 
 bool RelationOperatorParserRule::firstSymbolFits(int firstSymbol)
 {
+	switch (firstSymbol)
+	{
+	case '<':
+	case '>':
+	case '!':
+	case '=':
+		return true;
 
+	default:
+		return false;
+	}
 }
 
 ParserRuleState RelationOperatorParserRule::consumeSymbol()
 {
+	const int symbol = mInputStream->peek();
 
+	switch (mInternalState)
+	{
+	case IS_WaitFirstSymbol:
+		if (firstSymbolFits(symbol))
+		{
+			mHolder->push_back(symbol);
+			mInputStream->next();
+			mCurrentState = PRS_Intermediate;
+			mInternalState = IS_WaitSecondSymbol;
+		}
+		else
+		{
+			mCurrentState = PRS_Inapropriate;
+		}
+		break;
+
+	case IS_WaitSecondSymbol:
+		BOOST_ASSERT(!mHolder->empty());
+		switch ((*mHolder)[0])
+		{
+		case '<':
+		case '>':
+			if (!firstSymbolFits(symbol))
+			{
+				/// symbol does not belongs to our token
+				mCurrentState = PRS_Finished;
+				break;
+			}
+			else
+			{
+				/// allowed only <= or >=
+				if (symbol == '=')
+				{
+					mHolder->push_back(symbol);
+					mCurrentState = PRS_Finished;
+					mInputStream->next();
+				}
+				else
+				{
+					mCurrentState = PRS_Inapropriate;
+				}
+			}
+			break;
+
+		case '=':
+		case '!':
+			if (symbol != '=')
+			{
+				mCurrentState = PRS_Inapropriate;
+			}
+			else
+			{
+				mCurrentState = PRS_Finished;
+				mHolder->push_back(symbol);
+				mInputStream->next();
+			}
+			break;
+
+		default:
+			BOOST_ASSERT(0 && "holder cannot hold unknown symbol");
+			break;
+		}
+
+		break;
+
+	}
+
+	return mCurrentState;
+}
+
+
+
+void RelationOperatorParserRule::internalInit()
+{
+	mInternalState = IS_WaitFirstSymbol;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

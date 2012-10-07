@@ -125,6 +125,20 @@ public:
 
 	virtual ParserRuleState consumeSymbol();
 
+
+private:
+
+	enum IS_RelOpsState
+	{
+		IS_WaitFirstSymbol,
+		IS_WaitSecondSymbol
+	};
+
+	IS_RelOpsState mInternalState;
+
+
+	void internalInit();
+
 };
 
 

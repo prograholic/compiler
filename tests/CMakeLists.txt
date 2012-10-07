@@ -5,8 +5,12 @@ find_package(Threads REQUIRED)
 set (TestSources
 	test.cpp
 	CheckParser.cpp
+
+	CheckParserRule.h
 	CheckDoubleQuotedParserRule.cpp
+	CheckRelationOperatorParserRule.cpp
 	CheckASTBuilder.cpp
+
 )
 
 
