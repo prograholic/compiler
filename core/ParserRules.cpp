@@ -184,6 +184,7 @@ void DoubleQuotedTextParserRule::consumeMaskedSymbol(int symbol)
 
 	default:
 		mCurrentState = PRS_Inapropriate;
+		mLastError = EC_WrongMaskedSymbol;
 		escapingFinished = false;
 	}
 
@@ -226,6 +227,7 @@ void DoubleQuotedTextParserRule::consumeOctalValue1(int symbol)
 		else
 		{
 			mCurrentState = PRS_Inapropriate;
+			mLastError = EC_WrongOctalSymbol;
 		}
 	}
 }
@@ -251,6 +253,7 @@ void DoubleQuotedTextParserRule::consumeOctalValue2(int symbol)
 
 	default:
 		mCurrentState = PRS_Inapropriate;
+		mLastError = EC_WrongOctalSymbol;
 	}
 }
 
@@ -295,6 +298,7 @@ void DoubleQuotedTextParserRule::consumeHexValue0(int symbol)
 
 	default:
 		mCurrentState = PRS_Inapropriate;
+		mLastError = EC_WrongHexSymbol;
 	}
 
 	if (val >= 0)
@@ -345,6 +349,7 @@ void DoubleQuotedTextParserRule::consumeHexValue1(int symbol)
 
 	default:
 		mCurrentState = PRS_Inapropriate;
+		mLastError = EC_WrongHexSymbol;
 	}
 
 	if (val >= 0)

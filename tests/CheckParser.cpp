@@ -11,8 +11,6 @@
 
 class CheckParser : public ::testing::Test
 {
-
-
 public:
 
 	void SetUp()

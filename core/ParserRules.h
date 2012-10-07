@@ -64,7 +64,7 @@ private:
 };
 
 
-template <int Symbol, TokenType tokenId>
+template <int Symbol, TokenType tokenId, ErrorCodes ec>
 class OneSymbolParserRule : public ParserRuleBase
 {
 public:
@@ -88,6 +88,7 @@ public:
 		else
 		{
 			mCurrentState = PRS_Inapropriate;
+			mLastError = ec;
 		}
 
 		return mCurrentState;
@@ -95,20 +96,20 @@ public:
 };
 
 
-typedef OneSymbolParserRule<';', TK_Semicolon> SemicolonParserRule;
+typedef OneSymbolParserRule<';', TK_Semicolon,    EC_WrongSemicolonSymbol>    SemicolonParserRule;
 
-typedef OneSymbolParserRule<'*', TK_Star> StarParserRule;
+typedef OneSymbolParserRule<'*', TK_Star,         EC_WrongStarSymbol>         StarParserRule;
 
-typedef OneSymbolParserRule<'=', TK_Assignment> AssignmentParserRule;
+typedef OneSymbolParserRule<'=', TK_Assignment,   EC_WrongAssignmentSymbol>   AssignmentParserRule;
 
-typedef OneSymbolParserRule<'(', TK_OpenParen> OpenParenParserRule;
-typedef OneSymbolParserRule<')', TK_CloseParen> CloseParenParserRule;
+typedef OneSymbolParserRule<'(', TK_OpenParen,    EC_WrongOpenParenSymbol>    OpenParenParserRule;
+typedef OneSymbolParserRule<')', TK_CloseParen,   EC_WrongCloseParenSymbol>   CloseParenParserRule;
 
-typedef OneSymbolParserRule<'{', TK_OpenBrace> OpenBraceParserRule;
-typedef OneSymbolParserRule<'}', TK_CloseBrace> CloseBraceParserRule;
+typedef OneSymbolParserRule<'{', TK_OpenBrace,    EC_WrongOpenBraceSymbol>    OpenBraceParserRule;
+typedef OneSymbolParserRule<'}', TK_CloseBrace,   EC_WrongCloseBraceSymbol>   CloseBraceParserRule;
 
-typedef OneSymbolParserRule<'[', TK_OpenBracket> OpenBracketParserRule;
-typedef OneSymbolParserRule<']', TK_CloseBracket> CloseBracketParserRule;
+typedef OneSymbolParserRule<'[', TK_OpenBracket,  EC_WrongOpenBracketSymbol>  OpenBracketParserRule;
+typedef OneSymbolParserRule<']', TK_CloseBracket, EC_WrongCloseBracketSymbol> CloseBracketParserRule;
 
 
 

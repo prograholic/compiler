@@ -7,7 +7,7 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 
 #include "core/Token.h"
-
+#include "core/ErrorCodes.h"
 
 
 enum ParserRuleState
@@ -32,9 +32,11 @@ public:
 
 	ParserRuleState currentState();
 
-	void setTokenType(Token & token);
+	void updateTokenTypeForToken(Token & token) const;
 
 	TokenType tokenType() const;
+
+	ErrorCodes lastError() const;
 
 	virtual void init(std::string & holder);
 
@@ -43,12 +45,12 @@ public:
 
 	virtual ParserRuleState consumeSymbol(int symbol) = 0;
 
-
 protected:
 
 	std::string * mHolder;
 	ParserRuleState mCurrentState;
 	TokenType mTokenType;
+	ErrorCodes mLastError;
 
 };
 

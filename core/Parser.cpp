@@ -2,13 +2,16 @@
 
 #include <boost/assert.hpp>
 
+#include "Error.h"
+
 
 
 
 Parser::Parser(const ParserRuleList & parserRuleList, std::istream & inputStream)
 	: mInputStream(inputStream),
 	  mCurrentLocation(),
-	  mParserRuleList(parserRuleList)
+	  mParserRuleList(parserRuleList),
+	  mLastError(EC_NoError, mCurrentLocation)
 {
 }
 
@@ -28,8 +31,7 @@ bool Parser::getNextToken(Token & token)
 	ParserRulePtr parserRule = getParserRule(symbol);
 	if (!parserRule)
 	{
-		/// @todo: add error information
-		return false;
+		return returnWithError(EC_NoParserRule);
 	}
 
 	parserRule->init(token.lexeme);
@@ -67,12 +69,27 @@ bool Parser::getNextToken(Token & token)
 	{
 	case PRS_Finished:
 	case PRS_FinishedWithUnget:
-		parserRule->setTokenType(token);
+		parserRule->updateTokenTypeForToken(token);
 		return true;
 	}
 
-	return false;
+	return returnWithError(parserRule->lastError());
 }
+
+
+
+Error Parser::lastError() const
+{
+	return mLastError;
+}
+
+
+
+
+/////////////////// Private implementation ///////////////////
+
+
+
 
 
 void Parser::updateCurrentLocation(int symbol)
@@ -117,6 +134,15 @@ void Parser::skipSpaces()
 		}
 		updateCurrentLocation(symbol);
 	}
+}
+
+
+bool Parser::returnWithError(ErrorCodes ec)
+{
+	mLastError.errorCode = ec;
+	mLastError.location = mCurrentLocation;
+
+	return false;
 }
 
 

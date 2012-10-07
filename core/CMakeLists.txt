@@ -1,18 +1,23 @@
 set (CompilerCoreSources
-	Parser.cpp
-	Parser.h
+	TokenLocation.cpp
+	TokenLocation.h
 
-	ParserRuleBase.cpp
-	ParserRuleBase.h
+	ErrorCodes.h
+
+	Error.cpp
+	Error.h
 
 	Token.cpp
 	Token.h
 
-	TokenLocation.cpp
-	TokenLocation.h
+	ParserRuleBase.cpp
+	ParserRuleBase.h
 
 	ParserRules.cpp
 	ParserRules.h
+
+	Parser.cpp
+	Parser.h
 )
 
 
