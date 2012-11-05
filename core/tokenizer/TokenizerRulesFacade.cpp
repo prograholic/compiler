@@ -8,7 +8,7 @@
 #include "core/tokenizer/rules/DoubleQuotedTextTokenizerRule.h"
 #include "core/tokenizer/rules/OneSymbolTokenizerRule.h"
 #include "core/tokenizer/rules/RelationOperatorTokenizerRule.h"
-#include "core/tokenizer/rules/PreIncrementTokenizerRule.h"
+#include "core/tokenizer/rules/IncrementTokenizerRule.h"
 
 
 
@@ -36,7 +36,7 @@ TokenizerRulesFacade::TokenizerRulesFacade()
 
 	mTokenizerRuleList.push_back(boost::make_shared<RelationOperatorTokenizerRule>());
 
-	mTokenizerRuleList.push_back(boost::make_shared<PreIncrementTokenizerRule>());
+	mTokenizerRuleList.push_back(boost::make_shared<IncrementTokenizerRule>());
 }
 
 

@@ -29,7 +29,7 @@ enum TokenType
 
 	TK_RelationOperator,
 
-	TK_PreIncrement
+	TK_Increment
 };
 
 

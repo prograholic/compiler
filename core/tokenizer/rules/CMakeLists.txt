@@ -8,8 +8,8 @@ set (CompilerCoreTokenizerRulesSources
 	RelationOperatorTokenizerRule.cpp
 	RelationOperatorTokenizerRule.h
 
-	PreIncrementTokenizerRule.cpp
-	PreIncrementTokenizerRule.h
+	IncrementTokenizerRule.cpp
+	IncrementTokenizerRule.h
 
 	OneSymbolTokenizerRule.h
 )

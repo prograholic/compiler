@@ -1,20 +1,20 @@
-#include "PreIncrementTokenizerRule.h"
+#include "IncrementTokenizerRule.h"
 
 
 const int requiredSymbol = '+';
 
-PreIncrementTokenizerRule::PreIncrementTokenizerRule()
-	: TokenizerRuleBase(TK_PreIncrement),
+IncrementTokenizerRule::IncrementTokenizerRule()
+	: TokenizerRuleBase(TK_Increment),
 	  mInternalState(IS_WaitFirstPlus)
 {
 }
 
-bool PreIncrementTokenizerRule::firstSymbolFits(int firstSymbol)
+bool IncrementTokenizerRule::firstSymbolFits(int firstSymbol)
 {
 	return (firstSymbol == requiredSymbol);
 }
 
-TokenizerRuleState PreIncrementTokenizerRule::consumeSymbol()
+TokenizerRuleState IncrementTokenizerRule::consumeSymbol()
 {
 	const int symbol = mInputStream->peek();
 
@@ -54,7 +54,7 @@ TokenizerRuleState PreIncrementTokenizerRule::consumeSymbol()
 	return mCurrentState;
 }
 
-void PreIncrementTokenizerRule::internalInit()
+void IncrementTokenizerRule::internalInit()
 {
 	mInternalState = IS_WaitFirstPlus;
 }

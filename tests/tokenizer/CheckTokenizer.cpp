@@ -246,9 +246,9 @@ TEST_F(CheckTokenizer, CheckPreIncrement)
 	const char sample [] = "++x;";
 	Tokenizer tokenizer(tokenizerRules, streamFromSample(sample));
 
-	Token preIncrementToken;
-	ASSERT_TRUE(tokenizer.getNextToken(preIncrementToken));
-	EXPECT_TRUE(tokenChecking(preIncrementToken, "++", 0, 0, TK_PreIncrement));
+	Token incrementToken;
+	ASSERT_TRUE(tokenizer.getNextToken(incrementToken));
+	EXPECT_TRUE(tokenChecking(incrementToken, "++", 0, 0, TK_Increment));
 
 	Token xToken;
 	ASSERT_TRUE(tokenizer.getNextToken(xToken));
