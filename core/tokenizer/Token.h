@@ -27,7 +27,9 @@ enum TokenType
 	TK_CloseBracket,
 
 
-	TK_RelationOperator
+	TK_RelationOperator,
+
+	TK_PreIncrement
 };
 
 

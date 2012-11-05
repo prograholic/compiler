@@ -5,7 +5,10 @@
 
 
 #include "core/ASTBuilder.h"
-#include "core/ParserRules.h"
+
+#include "core/tokenizer/Tokenizer.h"
+#include "core/tokenizer/TokenizerRulesFacade.h"
+
 #include "core/StdInputStreamAdapter.h"
 #include "core/BufferedInputStream.h"
 
@@ -32,7 +35,10 @@ TEST_F(CheckASTBuilder, CheckVariableDeclaration)
 	StdInputStreamAdapter stdInputStreamAdapter(&inputStream);
 	BufferedInputStream bufferetInputStream(stdInputStreamAdapter);
 
-	Parser parser(getParserRuleList(), bufferetInputStream);
 
-	ASTBuilder astBuilder(parser);
+	TokenizerRulesFacade tokenizerRules;
+
+	Tokenizer tokenizer(tokenizerRules, bufferetInputStream);
+
+	ASTBuilder astBuilder(tokenizer);
 }

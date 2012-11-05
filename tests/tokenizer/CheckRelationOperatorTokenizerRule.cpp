@@ -1,19 +1,20 @@
-#include "CheckParserRule.h"
+#include "CheckTokenizerRule.h"
 
+#include "core/tokenizer/rules/RelationOperatorTokenizerRule.h"
 
-class CheckRelationOperatorParserRule : public CheckParserRule
+class CheckRelationOperatorParserRule : public CheckTokenizerRule
 {
 public:
 
 	virtual void SetUp()
 	{
-		CheckParserRule::SetUp();
+		CheckTokenizerRule::SetUp();
 
 		rule.init(bufferedInputStream, result);
 	}
 
 
-	RelationOperatorParserRule rule;
+	RelationOperatorTokenizerRule rule;
 };
 
 
@@ -24,8 +25,8 @@ TEST_F(CheckRelationOperatorParserRule, CheckEquality)
 	std::istringstream inputStream(sample);
 	stdInputStreamAdapter.updateInputStream(inputStream);
 
-	EXPECT_EQ(PRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(PRS_Finished, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ("==", result);
 }
@@ -37,8 +38,8 @@ TEST_F(CheckRelationOperatorParserRule, CheckInequality)
 	std::istringstream inputStream(sample);
 	stdInputStreamAdapter.updateInputStream(inputStream);
 
-	EXPECT_EQ(PRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(PRS_Finished, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ("!=", result);
 }
@@ -49,8 +50,8 @@ TEST_F(CheckRelationOperatorParserRule, CheckGreater)
 	std::istringstream inputStream(sample);
 	stdInputStreamAdapter.updateInputStream(inputStream);
 
-	EXPECT_EQ(PRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(PRS_Finished, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ(">", result);
 }
@@ -61,8 +62,8 @@ TEST_F(CheckRelationOperatorParserRule, CheckLess)
 	std::istringstream inputStream(sample);
 	stdInputStreamAdapter.updateInputStream(inputStream);
 
-	EXPECT_EQ(PRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(PRS_Finished, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ("<", result);
 }
@@ -74,8 +75,8 @@ TEST_F(CheckRelationOperatorParserRule, CheckGreaterOrEqual)
 	std::istringstream inputStream(sample);
 	stdInputStreamAdapter.updateInputStream(inputStream);
 
-	EXPECT_EQ(PRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(PRS_Finished, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ(">=", result);
 }
@@ -86,8 +87,8 @@ TEST_F(CheckRelationOperatorParserRule, CheckLessOrEqual)
 	std::istringstream inputStream(sample);
 	stdInputStreamAdapter.updateInputStream(inputStream);
 
-	EXPECT_EQ(PRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(PRS_Finished, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ("<=", result);
 }
