@@ -34,6 +34,7 @@ enum TokenType
 	TK_RelationOperator,
 
 	TK_Increment,
+	TK_Decrement,
 
 	/// reserved words (flow control)
 	TK_Return,

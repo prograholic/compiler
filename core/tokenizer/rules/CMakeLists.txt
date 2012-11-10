@@ -10,8 +10,8 @@ set (CompilerCoreTokenizerRulesSources
 	RelationOperatorTokenizerRule.cpp
 	RelationOperatorTokenizerRule.h
 
-	IncrementTokenizerRule.cpp
-	IncrementTokenizerRule.h
+	IncrementDecrementTokenizerRule.cpp
+	IncrementDecrementTokenizerRule.h
 
 	AssignmentTokenizerRule.cpp
 	AssignmentTokenizerRule.h

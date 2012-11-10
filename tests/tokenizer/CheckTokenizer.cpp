@@ -263,6 +263,29 @@ TEST_F(CheckTokenizer, CheckPreIncrement)
 }
 
 
+
+TEST_F(CheckTokenizer, CheckPreDecrement)
+{
+	const char sample [] = "--x;";
+	Tokenizer tokenizer(tokenizerRules, streamFromSample(sample));
+
+	Token incrementToken;
+	ASSERT_TRUE(tokenizer.getNextToken(incrementToken));
+	EXPECT_TRUE(tokenChecking(incrementToken, "--", 0, 0, TK_Decrement));
+
+	Token xToken;
+	ASSERT_TRUE(tokenizer.getNextToken(xToken));
+	EXPECT_TRUE(tokenChecking(xToken, "x", 0, 2, TK_AlphaNum));
+
+	Token semicolonToken;
+	ASSERT_TRUE(tokenizer.getNextToken(semicolonToken));
+	EXPECT_TRUE(tokenChecking(semicolonToken, ";", 0, 3, TK_Semicolon));
+
+	Token unusedToken;
+	EXPECT_FALSE(tokenizer.getNextToken(unusedToken));
+}
+
+
 TEST_F(CheckTokenizer, CheckAssignmentAndRelationOperator)
 {
 	const char sample [] = "if (x == y) z = 5;";

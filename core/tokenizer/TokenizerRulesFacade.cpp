@@ -10,7 +10,7 @@
 #include "core/tokenizer/rules/DoubleQuotedTextTokenizerRule.h"
 #include "core/tokenizer/rules/OneSymbolTokenizerRule.h"
 #include "core/tokenizer/rules/RelationOperatorTokenizerRule.h"
-#include "core/tokenizer/rules/IncrementTokenizerRule.h"
+#include "core/tokenizer/rules/IncrementDecrementTokenizerRule.h"
 #include "core/tokenizer/rules/AssignmentTokenizerRule.h"
 #include "core/tokenizer/rules/PredefinedNameTokenizerRule.h"
 #include "core/tokenizer/rules/IntegerConstantTokenizerRule.h"
@@ -135,7 +135,8 @@ void TokenizerRulesFacade::constructRules()
 
 	mTokenizerRuleList.push_back(boost::make_shared<RelationOperatorTokenizerRule>());
 
-	mTokenizerRuleList.push_back(boost::make_shared<IncrementTokenizerRule>());
+	mTokenizerRuleList.push_back(boost::make_shared<IncrementDecrementTokenizerRule>('+'));
+	mTokenizerRuleList.push_back(boost::make_shared<IncrementDecrementTokenizerRule>('-'));
 
 	mTokenizerRuleList.push_back(boost::make_shared<IntegerConstantTokenizerRule>());
 
