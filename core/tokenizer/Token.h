@@ -5,7 +5,6 @@
 
 #include "core/Location.h"
 
-
 enum TokenType
 {
 	TK_Unknown,
@@ -95,6 +94,7 @@ enum TokenType
 
 struct Token
 {
+	/// @todo create string_ref (or something similar) (reference on BufferedInputStream internal buffer).
 	std::string lexeme;
 
 	Location location;

@@ -1,9 +1,8 @@
 #ifndef COMPILER_CORE_BUFFERED_INPUT_STREAM_H
 #define COMPILER_CORE_BUFFERED_INPUT_STREAM_H
 
-#include <vector>
-
 #include "core/InputStreamBase.h"
+#include "core/StreamBuffer.h"
 
 class BufferedInputStream : public InputStreamBase
 {
@@ -21,14 +20,13 @@ public:
 
 	void unwind();
 
+	StreamBufferPtr buffer();
+
 private:
 
 	InputStreamBase & mInputStream;
 
-	typedef std::pair<int, Location> BufferEntry;
-	typedef std::vector<BufferEntry> BufferEntries;
-
-	BufferEntries mReadedData;
+	StreamBufferPtr mReadedData;
 
 	size_t mCurrentPosition;
 	size_t mCurrentScopePosition;

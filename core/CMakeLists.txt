@@ -7,6 +7,9 @@ set (CompilerCoreSources
 	Error.cpp
 	Error.h
 
+	StreamBuffer.cpp
+	StreamBuffer.h
+
 	InputStreamBase.cpp
 	InputStreamBase.h
 

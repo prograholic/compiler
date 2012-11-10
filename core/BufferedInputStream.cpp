@@ -1,10 +1,11 @@
 #include "BufferedInputStream.h"
 
 #include <boost/assert.hpp>
+#include <boost/smart_ptr/make_shared.hpp>
 
 BufferedInputStream::BufferedInputStream(InputStreamBase & inputStream)
 	: mInputStream(inputStream),
-	  mReadedData(),
+	  mReadedData(boost::make_shared<StreamBuffer>()),
 	  mCurrentPosition(0),
 	  mCurrentScopePosition(0)
 {
@@ -13,30 +14,30 @@ BufferedInputStream::BufferedInputStream(InputStreamBase & inputStream)
 
 int BufferedInputStream::peek()
 {
-	BOOST_ASSERT(mCurrentPosition <= mReadedData.size());
+	BOOST_ASSERT(mCurrentPosition <= mReadedData->size());
 
-	if (mCurrentPosition == mReadedData.size())
+	if (mCurrentPosition == mReadedData->size())
 	{
 		return mInputStream.peek();
 	}
 	else
 	{
-		BOOST_ASSERT(mCurrentPosition < mReadedData.size());
-		return mReadedData[mCurrentPosition].first;
+		BOOST_ASSERT(mCurrentPosition < mReadedData->size());
+		return mReadedData->symbol(mCurrentPosition);
 	}
 }
 
 int BufferedInputStream::next()
 {
-	BOOST_ASSERT(mCurrentPosition <= mReadedData.size());
+	BOOST_ASSERT(mCurrentPosition <= mReadedData->size());
 
-	if (mCurrentPosition == mReadedData.size())
+	if (mCurrentPosition == mReadedData->size())
 	{
 		readToInternalBuffer();
 	}
-	BOOST_ASSERT(mCurrentPosition < mReadedData.size());
+	BOOST_ASSERT(mCurrentPosition < mReadedData->size());
 
-	int result = mReadedData[mCurrentPosition].first;
+	int result = mReadedData->symbol(mCurrentPosition);
 
 	++mCurrentPosition;
 	return result;
@@ -45,16 +46,16 @@ int BufferedInputStream::next()
 
 Location BufferedInputStream::currentLocation()
 {
-	BOOST_ASSERT(mCurrentPosition <= mReadedData.size());
+	BOOST_ASSERT(mCurrentPosition <= mReadedData->size());
 
-	if (mCurrentPosition == mReadedData.size())
+	if (mCurrentPosition == mReadedData->size())
 	{
 		return mInputStream.currentLocation();
 	}
 	else
 	{
-		BOOST_ASSERT(mCurrentPosition < mReadedData.size());
-		return mReadedData[mCurrentPosition].second;
+		BOOST_ASSERT(mCurrentPosition < mReadedData->size());
+		return mReadedData->location(mCurrentPosition);
 	}
 }
 
@@ -78,6 +79,12 @@ void BufferedInputStream::unwind()
 
 
 
+StreamBufferPtr BufferedInputStream::buffer()
+{
+	return mReadedData;
+}
+
+
 
 ///////////////////////// private implementation /////////////////////////
 
@@ -88,6 +95,5 @@ void BufferedInputStream::readToInternalBuffer()
 	Location currentLocation = mInputStream.currentLocation();
 	int currentSymbol = mInputStream.next();
 
-	BufferEntry e = std::make_pair(currentSymbol, currentLocation);
-	mReadedData.push_back(e);
+	mReadedData->push_back(currentSymbol, currentLocation);
 }
