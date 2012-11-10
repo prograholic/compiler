@@ -9,6 +9,7 @@
 #include "core/tokenizer/rules/OneSymbolTokenizerRule.h"
 #include "core/tokenizer/rules/RelationOperatorTokenizerRule.h"
 #include "core/tokenizer/rules/IncrementTokenizerRule.h"
+#include "core/tokenizer/rules/AssignmentTokenizerRule.h"
 
 
 
@@ -43,15 +44,16 @@ TokenizerRulesFacade::TokenizerRulesFacade()
 
 
 
-TokenizerRulePtr TokenizerRulesFacade::getTokenizerRule(int firstSymbol) const
+TokenizerRuleList TokenizerRulesFacade::getTokenizerRule(int firstSymbol) const
 {
+	TokenizerRuleList result;
 	BOOST_FOREACH(const TokenizerRulePtr & tokenizerRule, mTokenizerRuleList)
 	{
 		if (tokenizerRule->firstSymbolFits(firstSymbol))
 		{
-			return tokenizerRule;
+			result.push_back(tokenizerRule);
 		}
 	}
 
-	return TokenizerRulePtr();
+	return result;
 }

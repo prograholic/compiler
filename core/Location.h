@@ -11,6 +11,8 @@ struct Location
 	Location();
 
 	Location(size_t l, size_t c);
+
+	void clear();
 };
 
 

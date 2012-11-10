@@ -1,6 +1,7 @@
 #include "Tokenizer.h"
 
 #include <boost/assert.hpp>
+#include <boost/foreach.hpp>
 
 #include "core/Error.h"
 
@@ -27,19 +28,39 @@ bool Tokenizer::getNextToken(Token & token)
 		return false;
 	}
 
-	TokenizerRulePtr tokenizerRule = mTokenizerRules.getTokenizerRule(symbol);
-	if (!tokenizerRule)
+
+
+	TokenizerRuleList ruleList = mTokenizerRules.getTokenizerRule(symbol);
+
+	if (ruleList.empty())
 	{
 		return returnWithError(EC_NoParserRule);
 	}
 
-	tokenizerRule->init(mInputStream, token.lexeme);
+	BOOST_FOREACH(TokenizerRulePtr rule, ruleList)
+	{
+		if (processOneRule(symbol, rule, token))
+		{
+			mLastError.clear();
+			return true;
+		}
+	}
+
+	/// error already set in processOneRule
+	return false;
+}
+
+
+
+bool Tokenizer::processOneRule(int symbol, TokenizerRulePtr rule, Token & token)
+{
+	rule->init(mInputStream, token.lexeme);
 
 	token.location = mInputStream.currentLocation();
 
 	while ((symbol = mInputStream.peek()) != InputStreamBase::EndOfFile)
 	{
-		const TokenizerRuleState tokenizerRuleState = tokenizerRule->consumeSymbol();
+		const TokenizerRuleState tokenizerRuleState = rule->consumeSymbol();
 
 		if (tokenizerRuleState == TRS_Finished)
 		{
@@ -52,14 +73,14 @@ bool Tokenizer::getNextToken(Token & token)
 		}
 	}
 
-	switch (tokenizerRule->currentState())
+	switch (rule->currentState())
 	{
 	case TRS_Finished:
-		tokenizerRule->updateTokenTypeForToken(token);
+		rule->updateTokenTypeForToken(token);
 		return true;
 	}
 
-	return returnWithError(tokenizerRule->lastError());
+	return returnWithError(rule->lastError());
 }
 
 

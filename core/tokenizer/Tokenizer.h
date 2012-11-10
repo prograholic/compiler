@@ -24,6 +24,8 @@ private:
 
 	bool returnWithError(ErrorCodes ec);
 
+	bool processOneRule(int symbol, TokenizerRulePtr rule, Token & token);
+
 };
 
 #endif // COMPILER_CORE_TOKENIZER_TOKENIZER_H

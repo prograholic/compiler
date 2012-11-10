@@ -11,6 +11,9 @@ set (CompilerCoreTokenizerRulesSources
 	IncrementTokenizerRule.cpp
 	IncrementTokenizerRule.h
 
+	AssignmentTokenizerRule.cpp
+	AssignmentTokenizerRule.h
+
 	OneSymbolTokenizerRule.h
 )
 

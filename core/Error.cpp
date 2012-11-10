@@ -5,3 +5,10 @@ Error::Error(ErrorCodes errCode, const Location & loc)
 	  location(loc)
 {
 }
+
+
+void Error::clear()
+{
+	errorCode = EC_NoError;
+	location.clear();
+}

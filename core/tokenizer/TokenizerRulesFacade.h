@@ -6,17 +6,20 @@
 #include "core/tokenizer/TokenizerRuleBase.h"
 
 
+typedef std::list<TokenizerRulePtr> TokenizerRuleList;
+
+
 class TokenizerRulesFacade
 {
 public:
 
 	TokenizerRulesFacade();
 
-	TokenizerRulePtr getTokenizerRule(int firstSymbol) const;
+	TokenizerRuleList getTokenizerRule(int firstSymbol) const;
 
 
 private:
-	typedef std::list<TokenizerRulePtr> TokenizerRuleList;
+
 
 
 	TokenizerRuleList mTokenizerRuleList;

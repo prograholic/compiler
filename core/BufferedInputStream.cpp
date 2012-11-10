@@ -71,7 +71,7 @@ void BufferedInputStream::markCurrentScope()
 
 void BufferedInputStream::unwind()
 {
-	BOOST_ASSERT(mCurrentScopePosition >= mCurrentPosition);
+	BOOST_ASSERT(mCurrentScopePosition <= mCurrentPosition);
 
 	mCurrentPosition = mCurrentScopePosition;
 }

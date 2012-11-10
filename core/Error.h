@@ -9,9 +9,13 @@ struct Error
 {
 	explicit Error(ErrorCodes errorCode, const Location & location = Location());
 
+	void clear();
+
 	ErrorCodes errorCode;
 
 	Location location;
+
+
 };
 
 
