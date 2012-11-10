@@ -44,8 +44,9 @@ TokenizerRulesFacade::TokenizerRulesFacade()
 
 
 
-TokenizerRuleList TokenizerRulesFacade::getTokenizerRule(int firstSymbol) const
+TokenizerRuleList TokenizerRulesFacade::getTokenizerRules(int firstSymbol) const
 {
+	/// @todo create previously prepared lists for given symbol
 	TokenizerRuleList result;
 	BOOST_FOREACH(const TokenizerRulePtr & tokenizerRule, mTokenizerRuleList)
 	{

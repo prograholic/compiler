@@ -30,7 +30,7 @@ bool Tokenizer::getNextToken(Token & token)
 
 
 
-	TokenizerRuleList ruleList = mTokenizerRules.getTokenizerRule(symbol);
+	TokenizerRuleList ruleList = mTokenizerRules.getTokenizerRules(symbol);
 
 	if (ruleList.empty())
 	{

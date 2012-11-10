@@ -15,7 +15,7 @@ public:
 
 	TokenizerRulesFacade();
 
-	TokenizerRuleList getTokenizerRule(int firstSymbol) const;
+	TokenizerRuleList getTokenizerRules(int firstSymbol) const;
 
 
 private:
