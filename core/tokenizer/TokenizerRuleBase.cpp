@@ -1,11 +1,12 @@
 #include "core/tokenizer/TokenizerRuleBase.h"
 
-TokenizerRuleBase::TokenizerRuleBase(TokenType tokenType)
+TokenizerRuleBase::TokenizerRuleBase(TokenType tokenType, TokenizerRulePriority priority)
 	: mHolder(0),
 	  mInputStream(0),
 	  mCurrentState(TRS_Unknown),
 	  mTokenType(tokenType),
-	  mLastError(EC_NoError)
+	  mLastError(EC_NoError),
+	  mPriority(priority)
 {
 }
 
@@ -28,6 +29,12 @@ TokenType TokenizerRuleBase::tokenType() const
 ErrorCodes TokenizerRuleBase::lastError() const
 {
 	return mLastError;
+}
+
+
+TokenizerRulePriority TokenizerRuleBase::priority() const
+{
+	return mPriority;
 }
 
 

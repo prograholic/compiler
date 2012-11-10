@@ -2,6 +2,7 @@
 #define COMPILER_CORE_TOKENIZER_TOKENIZER_RULES_FACADE_H
 
 #include <list>
+#include <vector>
 
 #include "core/tokenizer/TokenizerRuleBase.h"
 
@@ -21,10 +22,16 @@ public:
 private:
 
 
+	typedef std::vector<TokenizerRulePtr> TokenizerRuleHolder;
+	TokenizerRuleHolder mTokenizerRuleList;
 
-	TokenizerRuleList mTokenizerRuleList;
+
+	void constructRules();
+
+	void constructPredefinedSymbolTokenizers();
 
 
+	void sortWithPriority();
 };
 
 #endif // COMPILER_CORE_TOKENIZER_TOKENIZER_RULES_FACADE_H

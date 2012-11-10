@@ -15,6 +15,9 @@ set (CompilerCoreTokenizerRulesSources
 	AssignmentTokenizerRule.h
 
 	OneSymbolTokenizerRule.h
+
+	PredefinedNameTokenizerRule.cpp
+	PredefinedNameTokenizerRule.h
 )
 
 

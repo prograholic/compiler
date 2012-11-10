@@ -92,7 +92,7 @@ TEST_F(CheckTokenizer, CheckPositionsOfDeclarationIntVariable)
 
 	Token intToken;
 	ASSERT_TRUE(tokenizer.getNextToken(intToken));
-	EXPECT_TRUE(tokenChecking(intToken, "int", 0, 0, TK_AlphaNum));
+	EXPECT_TRUE(tokenChecking(intToken, "int", 0, 0, TK_Int));
 
 
 	Token xToken;
@@ -118,7 +118,7 @@ TEST_F(CheckTokenizer, CheckPositionsOfDeclarationVoidFuncionWithPointerToIntArg
 
 	Token voidToken;
 	ASSERT_TRUE(tokenizer.getNextToken(voidToken));
-	EXPECT_TRUE(tokenChecking(voidToken, "void", 0, 0, TK_AlphaNum));
+	EXPECT_TRUE(tokenChecking(voidToken, "void", 0, 0, TK_Void));
 
 
 	Token funcToken;
@@ -131,7 +131,7 @@ TEST_F(CheckTokenizer, CheckPositionsOfDeclarationVoidFuncionWithPointerToIntArg
 
 	Token intToken;
 	ASSERT_TRUE(tokenizer.getNextToken(intToken));
-	EXPECT_TRUE(tokenChecking(intToken, "int", 0, 10, TK_AlphaNum));
+	EXPECT_TRUE(tokenChecking(intToken, "int", 0, 10, TK_Int));
 
 	Token starToken;
 	ASSERT_TRUE(tokenizer.getNextToken(starToken));
@@ -166,7 +166,7 @@ TEST_F(CheckTokenizer, CheckPositionsOfRealisationOfVoidFunctionWithoutArguments
 
 	Token voidToken;
 	ASSERT_TRUE(tokenizer.getNextToken(voidToken));
-	EXPECT_TRUE(tokenChecking(voidToken, "void", 0, 0, TK_AlphaNum));
+	EXPECT_TRUE(tokenChecking(voidToken, "void", 0, 0, TK_Void));
 
 
 	Token funcToken;
@@ -205,11 +205,11 @@ TEST_F(CheckTokenizer, CheckPositionsOfArrayOfCharDeclaration)
 
 	Token constToken;
 	ASSERT_TRUE(tokenizer.getNextToken(constToken));
-	EXPECT_TRUE(tokenChecking(constToken, "const", 0, 0, TK_AlphaNum));
+	EXPECT_TRUE(tokenChecking(constToken, "const", 0, 0, TK_Const));
 
 	Token charToken;
 	ASSERT_TRUE(tokenizer.getNextToken(charToken));
-	EXPECT_TRUE(tokenChecking(charToken, "char", 0, 6, TK_AlphaNum));
+	EXPECT_TRUE(tokenChecking(charToken, "char", 0, 6, TK_Char));
 
 	Token sToken;
 	ASSERT_TRUE(tokenizer.getNextToken(sToken));
@@ -270,7 +270,7 @@ TEST_F(CheckTokenizer, CheckAssignmentAndRelationOperator)
 
 	Token ifToken;
 	ASSERT_TRUE(tokenizer.getNextToken(ifToken));
-	EXPECT_TRUE(tokenChecking(ifToken, "if", 0, 0, TK_AlphaNum));
+	EXPECT_TRUE(tokenChecking(ifToken, "if", 0, 0, TK_If));
 
 	Token openParenToken;
 	ASSERT_TRUE(tokenizer.getNextToken(openParenToken));

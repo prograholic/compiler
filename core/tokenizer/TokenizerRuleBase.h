@@ -17,12 +17,18 @@ enum TokenizerRuleState
 };
 
 
+enum TokenizerRulePriority
+{
+	TRR_Default,
+	TRR_High
+};
+
 
 class TokenizerRuleBase : private boost::noncopyable
 {
 public:
 
-	TokenizerRuleBase(TokenType tokenType);
+	TokenizerRuleBase(TokenType tokenType, TokenizerRulePriority priority = TRR_Default);
 
 	virtual ~TokenizerRuleBase();
 
@@ -35,13 +41,14 @@ public:
 
 	ErrorCodes lastError() const;
 
+	TokenizerRulePriority priority() const;
+
 	void init(BufferedInputStream & inputStream, std::string & holder);
-
-
 
 	virtual bool firstSymbolFits(int firstSymbol) = 0;
 
 	virtual TokenizerRuleState consumeSymbol() = 0;
+
 
 protected:
 
@@ -51,6 +58,7 @@ protected:
 	TokenizerRuleState mCurrentState;
 	TokenType mTokenType;
 	ErrorCodes mLastError;
+	TokenizerRulePriority mPriority;
 
 
 	virtual void internalInit();

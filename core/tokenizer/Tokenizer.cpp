@@ -54,6 +54,7 @@ bool Tokenizer::getNextToken(Token & token)
 
 bool Tokenizer::processOneRule(int symbol, TokenizerRulePtr rule, Token & token)
 {
+	token.lexeme.clear();
 	rule->init(mInputStream, token.lexeme);
 
 	token.location = mInputStream.currentLocation();

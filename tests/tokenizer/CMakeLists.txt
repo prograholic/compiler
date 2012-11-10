@@ -9,6 +9,7 @@ set (CheckTokenizerSources
 	CheckTokenizerRule.h
 	CheckDoubleQuotedTokenizerRule.cpp
 	CheckRelationOperatorTokenizerRule.cpp
+	CheckPredefinedNameTokenizerRule.cpp
 )
 
 
