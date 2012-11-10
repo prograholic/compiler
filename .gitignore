@@ -10,3 +10,7 @@
 *.lai
 *.la
 *.a
+
+
+# QtCreator CMakeLists project
+CMakeLists.txt.user
