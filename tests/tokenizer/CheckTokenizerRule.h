@@ -8,6 +8,12 @@
 #include "core/StdInputStreamAdapter.h"
 #include "core/BufferedInputStream.h"
 
+#include "core/tokenizer/Token.h"
+
+
+
+const void * const nullPointer = static_cast<const void *>(0);
+
 
 class CheckTokenizerRule : public ::testing::Test
 {
@@ -15,7 +21,7 @@ public:
 
 	virtual void SetUp()
 	{
-		result.clear();
+		result = Token();
 	}
 
 
@@ -28,7 +34,7 @@ public:
 		return *mBufferedInputStream;
 	}
 
-	std::string result;
+	Token result;
 
 private:
 

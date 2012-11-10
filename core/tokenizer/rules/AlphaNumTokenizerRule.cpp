@@ -3,7 +3,8 @@
 #include "SymbolClasses.h"
 
 AlphaNumTokenizerRule::AlphaNumTokenizerRule()
-	: TokenizerRuleBase(TK_AlphaNum)
+	: TokenizerRuleBase(TK_AlphaNum),
+	  mIsEmpty(true)
 {
 }
 
@@ -19,14 +20,14 @@ TokenizerRuleState AlphaNumTokenizerRule::consumeSymbol()
 
 	if (fitsAsIdentifier(symbol))
 	{
-		mHolder->push_back(symbol);
+		mIsEmpty = false;
 		mCurrentState = TRS_Intermediate;
 
 		mInputStream->next();
 	}
 	else
 	{
-		if (mHolder->empty())
+		if (mIsEmpty)
 		{
 			mCurrentState = TRS_Inapropriate;
 		}
@@ -37,4 +38,11 @@ TokenizerRuleState AlphaNumTokenizerRule::consumeSymbol()
 	}
 
 	return mCurrentState;
+}
+
+
+
+void AlphaNumTokenizerRule::internalInit()
+{
+	mIsEmpty = true;
 }

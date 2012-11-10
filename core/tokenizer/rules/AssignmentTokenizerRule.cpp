@@ -30,7 +30,6 @@ TokenizerRuleState AssignmentTokenizerRule::consumeSymbol()
 		}
 		else
 		{
-			mHolder->push_back(symbol);
 			mCurrentState = TRS_Finished;
 		}
 	}

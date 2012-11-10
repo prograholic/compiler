@@ -24,6 +24,8 @@ private:
 
 	IS_RelOpsState mInternalState;
 
+	int mFirstSymbol;
+
 
 	void internalInit();
 

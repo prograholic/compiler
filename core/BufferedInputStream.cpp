@@ -84,6 +84,17 @@ StreamBufferPtr BufferedInputStream::buffer()
 	return mReadedData;
 }
 
+size_t BufferedInputStream::currentScopePosition() const
+{
+	return mCurrentScopePosition;
+}
+
+
+size_t BufferedInputStream::currentPosition() const
+{
+	return mCurrentPosition;
+}
+
 
 
 ///////////////////////// private implementation /////////////////////////

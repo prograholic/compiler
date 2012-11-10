@@ -54,14 +54,19 @@ bool Tokenizer::getNextToken(Token & token)
 
 bool Tokenizer::processOneRule(int symbol, TokenizerRulePtr rule, Token & token)
 {
-	token.lexeme.clear();
-	rule->init(mInputStream, token.lexeme);
+	mInputStream.markCurrentScope();
+
+	token.lexeme = StringRef();//mInputStream.buffer(), mInputStream.currentScopePosition());
+	token.advancedLexemeValue = boost::any();
+
+	rule->init(mInputStream);
 
 	token.location = mInputStream.currentLocation();
 
 	while ((symbol = mInputStream.peek()) != InputStreamBase::EndOfFile)
 	{
 		const TokenizerRuleState tokenizerRuleState = rule->consumeSymbol();
+		//token.lexeme.advance_back();
 
 		if (tokenizerRuleState == TRS_Finished)
 		{
@@ -77,7 +82,7 @@ bool Tokenizer::processOneRule(int symbol, TokenizerRulePtr rule, Token & token)
 	switch (rule->currentState())
 	{
 	case TRS_Finished:
-		rule->updateTokenTypeForToken(token);
+		rule->updateToken(token);
 		return true;
 	}
 

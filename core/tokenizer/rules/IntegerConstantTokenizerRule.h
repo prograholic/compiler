@@ -3,6 +3,28 @@
 
 #include "core/tokenizer/TokenizerRuleBase.h"
 
+
+
+enum SuffixType
+{
+	ST_UnsignedBit = (1 << 0),
+	ST_FirstLongBit = (1 << 1),
+	ST_SecondLongBit = (1 << 2)
+};
+
+
+
+
+struct IntegerConstantInformation
+{
+	std::string decimalRepresentation;
+
+	unsigned int suffixBits;
+};
+
+
+
+
 class IntegerConstantTokenizerRule : public TokenizerRuleBase
 {
 public:
@@ -16,6 +38,8 @@ public:
 private:
 	enum InternalState
 	{
+		/// for mBase
+		IS_Unknown,
 		IS_WaitFirstSymbol,
 		IS_FirstSymbolWasZero,
 		IS_DecimalNumber,
@@ -26,19 +50,19 @@ private:
 		IS_Suffix
 	};
 
-	enum SuffixType
-	{
-		ST_UnsignedBit = (1 << 0),
-		ST_FirstLongBit = (1 << 1),
-		ST_SecondLongBit = (1 << 2)
-	};
-
-
 	InternalState mInternalState;
-	unsigned int mSuffixType;
+	unsigned int mSuffixBits;
+	int mFirstLongSuffix;
+	std::string mRepresentation;
+	InternalState mBase;
 
 
 	virtual void internalInit();
+
+
+	virtual void internalUpdateToken(Token & token) const;
+
+
 
 	void checkOptionalSuffix(const int symbol);
 

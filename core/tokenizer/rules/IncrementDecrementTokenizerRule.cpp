@@ -22,7 +22,6 @@ TokenizerRuleState IncrementDecrementTokenizerRule::consumeSymbol()
 	}
 	else
 	{
-		mHolder->push_back(symbol);
 		mInputStream->next();
 		switch (mInternalState)
 		{

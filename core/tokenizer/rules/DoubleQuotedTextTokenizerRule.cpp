@@ -42,7 +42,7 @@ TokenizerRuleState DoubleQuotedTextTokenizerRule::consumeSymbol()
 			}
 			else
 			{
-				mHolder->push_back(symbol);
+				mHolder.push_back(symbol);
 			}
 		}
 		else
@@ -87,47 +87,47 @@ void DoubleQuotedTextTokenizerRule::consumeMaskedSymbol(int symbol)
 	switch (symbol)
 	{
 	case 'a':
-		mHolder->push_back('\a');
+		mHolder.push_back('\a');
 		break;
 
 	case 'b':
-		mHolder->push_back('\b');
+		mHolder.push_back('\b');
 		break;
 
 	case 'f':
-		mHolder->push_back('\f');
+		mHolder.push_back('\f');
 		break;
 
 	case 'n':
-		mHolder->push_back('\n');
+		mHolder.push_back('\n');
 		break;
 
 	case 'r':
-		mHolder->push_back('\r');
+		mHolder.push_back('\r');
 		break;
 
 	case 't':
-		mHolder->push_back('\t');
+		mHolder.push_back('\t');
 		break;
 
 	case 'v':
-		mHolder->push_back('\v');
+		mHolder.push_back('\v');
 		break;
 
 	case '\'':
-		mHolder->push_back('\'');
+		mHolder.push_back('\'');
 		break;
 
 	case '\"':
-		mHolder->push_back('\"');
+		mHolder.push_back('\"');
 		break;
 
 	case '\\':
-		mHolder->push_back('\\');
+		mHolder.push_back('\\');
 		break;
 
 	case '\?':
-		mHolder->push_back('\?');
+		mHolder.push_back('\?');
 		break;
 
 	case '0':
@@ -183,7 +183,7 @@ void DoubleQuotedTextTokenizerRule::consumeOctalValue1(int symbol)
 		/// if previous symbol was 0, then this is end of C string
 		if (mTempForOctalValue == 0)
 		{
-			mHolder->push_back('\0');
+			mHolder.push_back('\0');
 			if (symbol == '\"')
 			{
 				/// received second double quote, stopping parsing
@@ -213,7 +213,7 @@ void DoubleQuotedTextTokenizerRule::consumeOctalValue2(int symbol)
 	case '7':
 		mTempForOctalValue += (symbol - '0');
 		mInternalState = IS_WaitSecondDoubleQuote;
-		mHolder->push_back(mTempForOctalValue);
+		mHolder.push_back(mTempForOctalValue);
 		mTempForOctalValue = 0;
 		break;
 
@@ -323,8 +323,21 @@ void DoubleQuotedTextTokenizerRule::consumeHexValue1(int symbol)
 		mTempForHexValue += val;
 		mInternalState = IS_WaitSecondDoubleQuote;
 
-		mHolder->push_back(mTempForHexValue);
+		mHolder.push_back(mTempForHexValue);
 		mTempForHexValue = 0;
 	}
 }
 
+
+
+
+
+void DoubleQuotedTextTokenizerRule::internalInit()
+{
+	mHolder.clear();
+}
+
+void DoubleQuotedTextTokenizerRule::internalUpdateToken(Token & token) const
+{
+	token.advancedLexemeValue = boost::any(mHolder);
+}

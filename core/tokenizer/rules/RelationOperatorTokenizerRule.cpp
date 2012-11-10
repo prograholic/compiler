@@ -1,7 +1,8 @@
 #include "core/tokenizer/rules/RelationOperatorTokenizerRule.h"
 
 RelationOperatorTokenizerRule::RelationOperatorTokenizerRule()
-	: TokenizerRuleBase(TK_RelationOperator)
+	: TokenizerRuleBase(TK_RelationOperator),
+	  mFirstSymbol(0)
 {
 
 }
@@ -31,7 +32,7 @@ TokenizerRuleState RelationOperatorTokenizerRule::consumeSymbol()
 	case IS_WaitFirstSymbol:
 		if (firstSymbolFits(symbol))
 		{
-			mHolder->push_back(symbol);
+			mFirstSymbol = symbol;
 			mInputStream->next();
 			mCurrentState = TRS_Intermediate;
 			mInternalState = IS_WaitSecondSymbol;
@@ -43,8 +44,7 @@ TokenizerRuleState RelationOperatorTokenizerRule::consumeSymbol()
 		break;
 
 	case IS_WaitSecondSymbol:
-		BOOST_ASSERT(!mHolder->empty());
-		switch ((*mHolder)[0])
+		switch (mFirstSymbol)
 		{
 		case '<':
 		case '>':
@@ -59,7 +59,6 @@ TokenizerRuleState RelationOperatorTokenizerRule::consumeSymbol()
 				/// allowed only <= or >=
 				if (symbol == '=')
 				{
-					mHolder->push_back(symbol);
 					mCurrentState = TRS_Finished;
 					mInputStream->next();
 				}
@@ -79,7 +78,6 @@ TokenizerRuleState RelationOperatorTokenizerRule::consumeSymbol()
 			else
 			{
 				mCurrentState = TRS_Finished;
-				mHolder->push_back(symbol);
 				mInputStream->next();
 			}
 			break;
@@ -101,4 +99,5 @@ TokenizerRuleState RelationOperatorTokenizerRule::consumeSymbol()
 void RelationOperatorTokenizerRule::internalInit()
 {
 	mInternalState = IS_WaitFirstSymbol;
+	mFirstSymbol = 0;
 }

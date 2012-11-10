@@ -10,6 +10,9 @@ set (CompilerCoreSources
 	StreamBuffer.cpp
 	StreamBuffer.h
 
+	StringRef.cpp
+	StringRef.h
+
 	InputStreamBase.cpp
 	InputStreamBase.h
 

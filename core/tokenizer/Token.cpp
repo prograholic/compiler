@@ -4,14 +4,19 @@
 Token::Token()
 	: lexeme(),
 	  location(),
-	  type(TK_Unknown)
-{}
+	  type(TK_Unknown),
+	  advancedLexemeValue()
+{
+}
 
-Token::Token(TokenType tokenType, const std::string & l, const Location & loc)
+Token::Token(TokenType tokenType, const StringRef & l, const Location & loc)
 	: lexeme(l),
 	  location(loc),
-	  type(tokenType)
-{}
+	  type(tokenType),
+	  advancedLexemeValue()
+{
+
+}
 
 
 bool operator == (const Token & t1, const Token & t2)
@@ -31,5 +36,10 @@ bool operator == (const Token & t1, const Token & t2)
 		return false;
 	}
 
+/*	if (t1.advancedLexemeValue != t2.advancedLexemeValue)
+	{
+		return false;
+	}
+*/
 	return true;
 }

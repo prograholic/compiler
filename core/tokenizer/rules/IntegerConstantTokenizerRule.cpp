@@ -17,7 +17,10 @@ namespace
 IntegerConstantTokenizerRule::IntegerConstantTokenizerRule()
 	: TokenizerRuleBase(TK_IntegerConstant, TRR_Default),
 	  mInternalState(IS_WaitFirstSymbol),
-	  mSuffixType(0)
+	  mSuffixBits(0),
+	  mFirstLongSuffix(0),
+	  mRepresentation(),
+	  mBase(IS_Unknown)
 {
 }
 
@@ -77,7 +80,20 @@ TokenizerRuleState IntegerConstantTokenizerRule::consumeSymbol()
 void IntegerConstantTokenizerRule::internalInit()
 {
 	mInternalState = IS_WaitFirstSymbol;
-	mSuffixType = 0;
+	mSuffixBits = 0;
+	mFirstLongSuffix = 0;
+	mRepresentation.clear();
+	mBase = IS_Unknown;
+}
+
+
+
+void IntegerConstantTokenizerRule::internalUpdateToken(Token & token) const
+{
+	BOOST_ASSERT((mBase == IS_OctalNumber) || (mBase == IS_DecimalNumber) || (mBase == IS_HexadecimalNumber));
+
+
+	/// @todo switch from one base to decimal
 }
 
 
@@ -89,22 +105,21 @@ void IntegerConstantTokenizerRule::checkOptionalSuffix(const int symbol)
 	{
 	case 'u':
 	case 'U':
-		if (mSuffixType & ST_UnsignedBit)
+		if (mSuffixBits & ST_UnsignedBit)
 		{
 			mCurrentState = TRS_Inapropriate;
 		}
 		else
 		{
 			mInternalState = IS_Suffix;
-			mHolder->push_back(symbol);
-			mSuffixType |= ST_UnsignedBit;
+			mSuffixBits |= ST_UnsignedBit;
 		}
 		break;
 
 
 	case 'l':
 	case 'L':
-		if (mSuffixType & ST_SecondLongBit)
+		if (mSuffixBits & ST_SecondLongBit)
 		{
 			mCurrentState = TRS_Inapropriate;
 			return;
@@ -112,22 +127,21 @@ void IntegerConstantTokenizerRule::checkOptionalSuffix(const int symbol)
 
 		mInternalState = IS_Suffix;
 
-		if (mSuffixType & ST_FirstLongBit)
+		if (mSuffixBits & ST_FirstLongBit)
 		{
-			if ((*mHolder)[mHolder->size() - 1] != symbol)
+			if (mFirstLongSuffix != symbol)
 			{
 				mCurrentState = TRS_Inapropriate;
 			}
 			else
 			{
-				mSuffixType |= ST_SecondLongBit;
-				mHolder->push_back(symbol);
+				mSuffixBits |= ST_SecondLongBit;
 			}
 		}
 		else
 		{
-			mSuffixType |= ST_FirstLongBit;
-			mHolder->push_back(symbol);
+			mSuffixBits |= ST_FirstLongBit;
+			mFirstLongSuffix = symbol;
 		}
 		break;
 
@@ -152,7 +166,6 @@ void IntegerConstantTokenizerRule::onWaitFirstSymbol(const int symbol)
 {
 	if (std::isdigit(symbol))
 	{
-		mHolder->push_back(symbol);
 		if (symbol == '0')
 		{
 			mInternalState = IS_FirstSymbolWasZero;
@@ -160,8 +173,10 @@ void IntegerConstantTokenizerRule::onWaitFirstSymbol(const int symbol)
 		else
 		{
 			mInternalState = IS_DecimalNumber;
+			mBase = IS_DecimalNumber;
 		}
 
+		mRepresentation.push_back(symbol);
 		mCurrentState = TRS_Intermediate;
 	}
 	else
@@ -179,8 +194,9 @@ void IntegerConstantTokenizerRule::onFirstSymbolWasZero(const int symbol)
 
 	if (isOctal(symbol))
 	{
-		mHolder->push_back(symbol);
+		mRepresentation.push_back(symbol);
 		mInternalState = IS_OctalNumber;
+		mBase = IS_OctalNumber;
 	}
 	else
 	{
@@ -194,10 +210,12 @@ void IntegerConstantTokenizerRule::onFirstSymbolWasZero(const int symbol)
 		case 'x':
 		case 'X':
 			mInternalState = IS_WaitForHexadecimalNumber;
+			mBase = IS_HexadecimalNumber;
 			break;
 
 		default:
 			checkOptionalSuffix(symbol);
+			mBase = IS_DecimalNumber;
 			break;
 
 		}
@@ -210,7 +228,7 @@ void IntegerConstantTokenizerRule::onDecimalNumber(const int symbol)
 {
 	if (std::isdigit(symbol))
 	{
-		mHolder->push_back(symbol);
+		mRepresentation.push_back(symbol);
 		mCurrentState = TRS_Intermediate;
 	}
 	else
@@ -226,9 +244,8 @@ void IntegerConstantTokenizerRule::onOctalNumber(const int symbol)
 {
 	if (isOctal(symbol))
 	{
-		mHolder->push_back(symbol);
+		mRepresentation.push_back(symbol);
 		mCurrentState = TRS_Intermediate;
-		mInternalState = IS_OctalNumber;
 	}
 	else
 	{
@@ -240,7 +257,7 @@ void IntegerConstantTokenizerRule::onHexadecimalNumber(const int symbol)
 {
 	if (std::isxdigit(symbol))
 	{
-		mHolder->push_back(symbol);
+		mRepresentation.push_back(symbol);
 		mCurrentState = TRS_Intermediate;
 		mInternalState = IS_HexadecimalNumber;
 	}

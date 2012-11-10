@@ -12,6 +12,10 @@
 
 
 
+#include "CheckTokenizerRule.h"
+
+
+
 
 class CheckTokenizer : public ::testing::Test
 {
@@ -53,9 +57,9 @@ private:
 
 testing::AssertionResult tokenChecking(const Token & t, const std::string & name, size_t line, size_t col, TokenType tokenType)
 {
-	if (t.lexeme != name)
+	if (t.lexeme.toString() != name)
 	{
-		return ::testing::AssertionFailure() << "bad token name [" << t.lexeme << "], "
+		return ::testing::AssertionFailure() << "bad token name [" << t.lexeme.toString() << "], "
 												"expected [" << name << "]";
 	}
 
@@ -229,7 +233,10 @@ TEST_F(CheckTokenizer, CheckPositionsOfArrayOfCharDeclaration)
 
 	Token stringToken;
 	ASSERT_TRUE(tokenizer.getNextToken(stringToken));
-	EXPECT_TRUE(tokenChecking(stringToken, "abc\" def", 0, 18, TK_DoubleQuotedText));
+	EXPECT_TRUE(tokenChecking(stringToken, "\"abc\\\" def\"", 0, 18, TK_DoubleQuotedText));
+	std::string * advValue = stringToken.advanced_value<std::string>();
+	ASSERT_NE(nullPointer, advValue);
+	EXPECT_EQ("abc\" def", *advValue);
 
 	Token semicolonToken;
 	ASSERT_TRUE(tokenizer.getNextToken(semicolonToken));

@@ -15,12 +15,15 @@ public:
 
 	virtual Location currentLocation();
 
-
 	void markCurrentScope();
 
 	void unwind();
 
 	StreamBufferPtr buffer();
+
+	size_t currentScopePosition() const;
+
+	size_t currentPosition() const;
 
 private:
 

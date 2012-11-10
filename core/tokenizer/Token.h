@@ -3,7 +3,10 @@
 
 #include <string>
 
+#include <boost/any.hpp>
+
 #include "core/Location.h"
+#include "core/StringRef.h"
 
 enum TokenType
 {
@@ -94,16 +97,25 @@ enum TokenType
 
 struct Token
 {
-	/// @todo create string_ref (or something similar) (reference on BufferedInputStream internal buffer).
-	std::string lexeme;
+	StringRef lexeme;
 
 	Location location;
+
+	boost::any advancedLexemeValue;
 
 	TokenType type;
 
 	Token();
 
-	Token(TokenType tokenType, const std::string & l, const Location & loc);
+	Token(TokenType tokenType, const StringRef & l, const Location & loc);
+
+
+	template <typename OutputT>
+	OutputT * advanced_value()
+	{
+		return boost::any_cast<OutputT>(&advancedLexemeValue);
+	}
+
 };
 
 bool operator == (const Token & t1, const Token & t2);

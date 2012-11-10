@@ -37,6 +37,9 @@ private:
 	unsigned int mTempForOctalValue;
 	unsigned int mTempForHexValue;
 
+
+	std::string mHolder;
+
 	void consumeMaskedSymbol(int symbol);
 
 	void consumeOctalValue1(int symbol);
@@ -47,6 +50,11 @@ private:
 
 	void consumeHexValue1(int symbol);
 
+
+
+	virtual void internalInit();
+
+	virtual void internalUpdateToken(Token & token) const;
 };
 
 #endif // COMPILER_CORE_TOKENIZER_RULES_DOUBLE_QUOTED_TOKENIZER_RULE_H

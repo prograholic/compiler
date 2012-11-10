@@ -35,7 +35,7 @@ public:
 
 	TokenizerRuleState currentState();
 
-	void updateTokenTypeForToken(Token & token) const;
+	void updateToken(Token & token) const;
 
 	TokenType tokenType() const;
 
@@ -43,16 +43,15 @@ public:
 
 	TokenizerRulePriority priority() const;
 
-	void init(BufferedInputStream & inputStream, std::string & holder);
-
-	virtual bool firstSymbolFits(int firstSymbol) = 0;
+	void init(BufferedInputStream & inputStream);
 
 	virtual TokenizerRuleState consumeSymbol() = 0;
+
+	virtual bool firstSymbolFits(int firstSymbol) = 0;
 
 
 protected:
 
-	std::string * mHolder;
 	BufferedInputStream * mInputStream;
 
 	TokenizerRuleState mCurrentState;
@@ -60,8 +59,9 @@ protected:
 	ErrorCodes mLastError;
 	TokenizerRulePriority mPriority;
 
-
 	virtual void internalInit();
+
+	virtual void internalUpdateToken(Token & token) const;
 
 };
 

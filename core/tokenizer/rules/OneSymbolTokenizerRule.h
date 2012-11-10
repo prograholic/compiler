@@ -23,7 +23,6 @@ public:
 
 		if (symbol == Symbol)
 		{
-			mHolder->push_back(symbol);
 			mCurrentState = TRS_Finished;
 		}
 		else
@@ -40,8 +39,6 @@ public:
 typedef OneSymbolTokenizerRule<';', TK_Semicolon,    EC_WrongSemicolonSymbol>    SemicolonTokenizerRule;
 
 typedef OneSymbolTokenizerRule<'*', TK_Star,         EC_WrongStarSymbol>         StarTokenizerRule;
-
-//typedef OneSymbolTokenizerRule<'=', TK_Assignment,   EC_WrongAssignmentSymbol>   AssignmentTokenizerRule;
 
 typedef OneSymbolTokenizerRule<'(', TK_OpenParen,    EC_WrongOpenParenSymbol>    OpenParenTokenizerRule;
 typedef OneSymbolTokenizerRule<')', TK_CloseParen,   EC_WrongCloseParenSymbol>   CloseParenTokenizerRule;

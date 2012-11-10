@@ -1,8 +1,7 @@
 #include "core/tokenizer/TokenizerRuleBase.h"
 
 TokenizerRuleBase::TokenizerRuleBase(TokenType tokenType, TokenizerRulePriority priority)
-	: mHolder(0),
-	  mInputStream(0),
+	: mInputStream(0),
 	  mCurrentState(TRS_Unknown),
 	  mTokenType(tokenType),
 	  mLastError(EC_NoError),
@@ -16,9 +15,15 @@ TokenizerRuleBase::~TokenizerRuleBase()
 
 
 
-void TokenizerRuleBase::updateTokenTypeForToken(Token & token) const
+void TokenizerRuleBase::updateToken(Token & token) const
 {
 	token.type = mTokenType;
+
+	token.lexeme = StringRef(mInputStream->buffer(),
+							 mInputStream->currentScopePosition(),
+							 mInputStream->currentPosition());
+
+	internalUpdateToken(token);
 }
 
 TokenType TokenizerRuleBase::tokenType() const
@@ -39,13 +44,12 @@ TokenizerRulePriority TokenizerRuleBase::priority() const
 
 
 
-void TokenizerRuleBase::init(BufferedInputStream & inputStream, std::string & holder)
+void TokenizerRuleBase::init(BufferedInputStream & inputStream)
 {
-	mHolder = &holder;
+	inputStream.markCurrentScope();
+
 	mInputStream = &inputStream;
 	mCurrentState = TRS_Unknown;
-
-	inputStream.markCurrentScope();
 
 	this->internalInit();
 }
@@ -65,4 +69,10 @@ TokenizerRuleState TokenizerRuleBase::currentState()
 
 
 void TokenizerRuleBase::internalInit()
-{}
+{
+}
+
+void TokenizerRuleBase::internalUpdateToken(Token & /* token */) const
+{
+
+}

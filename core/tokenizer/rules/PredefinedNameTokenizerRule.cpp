@@ -33,7 +33,6 @@ TokenizerRuleState PredefinedNameTokenizerRule::consumeSymbol()
 			}
 			else
 			{
-				*mHolder = mPredefinedName;
 				mCurrentState = TRS_Finished;
 			}
 		}
