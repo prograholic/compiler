@@ -21,8 +21,8 @@ TEST_F(CheckPredefinedNameTokenizerRule, CheckPositiveScenario)
 	PredefinedNameTokenizerRule rule(TK_If, "if");
 	rule.init(streamFromSample(sample), result);
 
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ("if", result);
 }
@@ -48,8 +48,8 @@ TEST_F(CheckPredefinedNameTokenizerRule, CheckNegativeScenarioWithShortString)
 	PredefinedNameTokenizerRule rule(TK_Return, "return");
 	rule.init(streamFromSample(sample), result);
 
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
 	EXPECT_EQ(TRS_Inapropriate, rule.consumeSymbol());
 }

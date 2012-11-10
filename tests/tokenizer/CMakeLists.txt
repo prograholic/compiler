@@ -10,6 +10,8 @@ set (CheckTokenizerSources
 	CheckDoubleQuotedTokenizerRule.cpp
 	CheckRelationOperatorTokenizerRule.cpp
 	CheckPredefinedNameTokenizerRule.cpp
+	CheckIntegerConstantTokenizerRule.cpp
+	CheckAlphaNumTokenizerRule.cpp
 )
 
 

@@ -18,8 +18,8 @@ TEST_F(CheckDoubleQuotedTokenizerRule, CheckEmptyString)
 	const char sample [] = "\"\"";
 	rule.init(streamFromSample(sample), result);
 
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ("", result);
 }
@@ -31,10 +31,10 @@ TEST_F(CheckDoubleQuotedTokenizerRule, CheckStringWithoutEscapedSymbols)
 	const char sample [] = "\"ab\"";
 	rule.init(streamFromSample(sample), result);
 
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ("ab", result);
 }
@@ -46,10 +46,10 @@ TEST_F(CheckDoubleQuotedTokenizerRule, CheckStringWithEscapedSymbolNewline)
 	const char sample [] = "\"\\n\"";
 	rule.init(streamFromSample(sample), result);
 
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ("\n", result);
 }
@@ -60,12 +60,12 @@ TEST_F(CheckDoubleQuotedTokenizerRule, CheckStringWithEscapedSymbolOctal)
 	const char sample [] = "\"\\036\"";
 	rule.init(streamFromSample(sample), result);
 
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	EXPECT_EQ("\036", result);
 }
@@ -77,10 +77,10 @@ TEST_F(CheckDoubleQuotedTokenizerRule, CheckStringWithEscapedSymbolCStringTermin
 	const char sample [] = "\"\\0\"";
 	rule.init(streamFromSample(sample), result);
 
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Intermediate, rule.consumeSymbol());
-	EXPECT_EQ(TRS_Finished, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Intermediate, rule.consumeSymbol());
+	ASSERT_EQ(TRS_Finished, rule.consumeSymbol());
 
 	ASSERT_EQ(1, result.size());
 	EXPECT_EQ('\0', result[0]);

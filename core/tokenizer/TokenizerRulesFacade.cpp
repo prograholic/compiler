@@ -13,6 +13,7 @@
 #include "core/tokenizer/rules/IncrementTokenizerRule.h"
 #include "core/tokenizer/rules/AssignmentTokenizerRule.h"
 #include "core/tokenizer/rules/PredefinedNameTokenizerRule.h"
+#include "core/tokenizer/rules/IntegerConstantTokenizerRule.h"
 
 
 
@@ -86,6 +87,7 @@ void TokenizerRulesFacade::constructPredefinedSymbolTokenizers()
 	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Register, "register"));
 	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Restricted, "restricted"));
 	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Static, "static"));
+	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Inline, "inline"));
 
 
 	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Signed, "signed"));
@@ -102,6 +104,10 @@ void TokenizerRulesFacade::constructPredefinedSymbolTokenizers()
 	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Enum, "enum"));
 	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Union, "union"));
 	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Typedef, "typedef"));
+	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Extern, "extern"));
+	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Auto, "auto"));
+
+	mTokenizerRuleList.push_back(boost::make_shared<PredefinedNameTokenizerRule>(TK_Sizeof, "sizeof"));
 }
 
 
@@ -130,6 +136,8 @@ void TokenizerRulesFacade::constructRules()
 	mTokenizerRuleList.push_back(boost::make_shared<RelationOperatorTokenizerRule>());
 
 	mTokenizerRuleList.push_back(boost::make_shared<IncrementTokenizerRule>());
+
+	mTokenizerRuleList.push_back(boost::make_shared<IntegerConstantTokenizerRule>());
 
 
 	constructPredefinedSymbolTokenizers();

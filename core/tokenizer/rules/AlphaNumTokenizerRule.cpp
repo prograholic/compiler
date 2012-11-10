@@ -1,5 +1,7 @@
 #include "AlphaNumTokenizerRule.h"
 
+#include "SymbolClasses.h"
+
 AlphaNumTokenizerRule::AlphaNumTokenizerRule()
 	: TokenizerRuleBase(TK_AlphaNum)
 {
@@ -8,14 +10,14 @@ AlphaNumTokenizerRule::AlphaNumTokenizerRule()
 
 bool AlphaNumTokenizerRule::firstSymbolFits(int firstSymbol)
 {
-	return std::isalnum(firstSymbol);
+	return fitsAsIdentifier(firstSymbol, true);
 }
 
 TokenizerRuleState AlphaNumTokenizerRule::consumeSymbol()
 {
 	int symbol = mInputStream->peek();
 
-	if (std::isalnum(symbol))
+	if (fitsAsIdentifier(symbol))
 	{
 		mHolder->push_back(symbol);
 		mCurrentState = TRS_Intermediate;

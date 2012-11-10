@@ -302,7 +302,7 @@ TEST_F(CheckTokenizer, CheckAssignmentAndRelationOperator)
 
 	Token _5Token;
 	ASSERT_TRUE(tokenizer.getNextToken(_5Token));
-	EXPECT_TRUE(tokenChecking(_5Token, "5", 0, 16, TK_AlphaNum));
+	EXPECT_TRUE(tokenChecking(_5Token, "5", 0, 16, TK_IntegerConstant));
 
 	Token semicolonToken;
 	ASSERT_TRUE(tokenizer.getNextToken(semicolonToken));

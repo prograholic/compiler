@@ -1,4 +1,6 @@
 set (CompilerCoreTokenizerRulesSources
+	SymbolClasses.h
+
 	AlphaNumTokenizerRule.cpp
 	AlphaNumTokenizerRule.h
 
@@ -18,6 +20,9 @@ set (CompilerCoreTokenizerRulesSources
 
 	PredefinedNameTokenizerRule.cpp
 	PredefinedNameTokenizerRule.h
+
+	IntegerConstantTokenizerRule.cpp
+	IntegerConstantTokenizerRule.h
 )
 
 

@@ -11,6 +11,10 @@ enum TokenType
 	TK_Unknown,
 
 	TK_AlphaNum,
+
+	TK_IntegerConstant,
+	TK_FloatingPointConstant,
+
 	TK_DoubleQuotedText,
 
 	TK_Semicolon,
@@ -57,6 +61,7 @@ enum TokenType
 	TK_Register,
 	TK_Restricted,
 	TK_Static,
+	TK_Inline,
 
 	TK_Signed,
 	TK_Unsigned,
@@ -76,7 +81,13 @@ enum TokenType
 	TK_Struct,
 	TK_Enum,
 	TK_Union,
-	TK_Typedef
+	TK_Typedef,
+	TK_Extern,
+	TK_Auto,
+
+
+	/// reserved words (other)
+	TK_Sizeof
 };
 
 
