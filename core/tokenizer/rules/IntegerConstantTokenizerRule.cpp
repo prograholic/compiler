@@ -15,7 +15,7 @@ namespace
 
 
 IntegerConstantTokenizerRule::IntegerConstantTokenizerRule()
-	: TokenizerRuleBase(TK_IntegerConstant, TRR_High),
+	: TokenizerRuleBase(TK_IntegerConstant, TRR_Default),
 	  mInternalState(IS_WaitFirstSymbol),
 	  mSuffixType(0)
 {
