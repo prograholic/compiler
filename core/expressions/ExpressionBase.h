@@ -11,6 +11,7 @@
 class ExpressionBase : public boost::enable_shared_from_this<ExpressionBase>
 {
 public:
+
   virtual ~ExpressionBase();
 
   virtual ExpressionVisitStatus visit(ExpressionsVisitorBase & visitor) = 0;
@@ -26,6 +27,9 @@ public:
   template <typename ThisT>
   boost::shared_ptr<ThisT> shared_from(ThisT * thisPointer)
   {
+    /**
+     * If you got assert here, than you passed incorrect pointer as function argument (must be `this`)
+     */
     BOOST_ASSERT(this == static_cast<ExpressionBase*>(thisPointer));
 
     return boost::static_pointer_cast<ThisT>(ExpressionBase::shared_from_this());
@@ -34,6 +38,7 @@ public:
 
 private:
 
+  /// @todo think how to pass corresponding tokens to Expression
   TokenList mTokens;
 
 };
