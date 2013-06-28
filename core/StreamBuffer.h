@@ -14,31 +14,31 @@ class StreamBuffer : private boost::noncopyable
 {
 public:
 
-	typedef char value_type;
+  typedef char value_type;
 
-	StreamBuffer();
+  StreamBuffer();
 
-	size_t size() const;
+  size_t size() const;
 
-	value_type & symbol(size_t pos);
+  value_type & symbol(size_t pos);
 
-	value_type symbol(size_t pos) const;
+  const value_type & symbol(size_t pos) const;
 
-	Location & location(size_t pos);
+  Location & location(size_t pos);
 
-	const Location & location(size_t pos) const;
+  const Location & location(size_t pos) const;
 
 
-	void push_back(char symbol, const Location & loc);
+  void push_back(char symbol, const Location & loc);
 
 
 private:
 
-	typedef std::vector<char> BufferEntries;
-	typedef std::vector<Location> LocationEntries;
+  typedef std::vector<char> BufferEntries;
+  typedef std::vector<Location> LocationEntries;
 
-	BufferEntries mSymbols;
-	LocationEntries mLocations;
+  BufferEntries mSymbols;
+  LocationEntries mLocations;
 };
 
 

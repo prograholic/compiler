@@ -7,9 +7,9 @@
 
 enum SuffixType
 {
-	ST_UnsignedBit = (1 << 0),
-	ST_FirstLongBit = (1 << 1),
-	ST_SecondLongBit = (1 << 2)
+  ST_UnsignedBit = (1 << 0),
+  ST_FirstLongBit = (1 << 1),
+  ST_SecondLongBit = (1 << 2)
 };
 
 
@@ -17,9 +17,9 @@ enum SuffixType
 
 struct IntegerConstantInformation
 {
-	std::string decimalRepresentation;
+  std::string decimalRepresentation;
 
-	unsigned int suffixBits;
+  unsigned int suffixBits;
 };
 
 
@@ -28,55 +28,55 @@ struct IntegerConstantInformation
 class IntegerConstantTokenizerRule : public TokenizerRuleBase
 {
 public:
-	IntegerConstantTokenizerRule();
+  IntegerConstantTokenizerRule();
 
-	virtual bool firstSymbolFits(int firstSymbol);
+  virtual bool firstSymbolFits(int firstSymbol);
 
-	virtual TokenizerRuleState consumeSymbol();
+  virtual TokenizerRuleState consumeSymbol();
 
 
 private:
-	enum InternalState
-	{
-		/// for mBase
-		IS_Unknown,
-		IS_WaitFirstSymbol,
-		IS_FirstSymbolWasZero,
-		IS_DecimalNumber,
-		IS_OctalNumber,
-		IS_WaitForHexadecimalNumber,
-		IS_HexadecimalNumber,
+  enum InternalState
+  {
+    /// for mBase
+    IS_Unknown,
+    IS_WaitFirstSymbol,
+    IS_FirstSymbolWasZero,
+    IS_DecimalNumber,
+    IS_OctalNumber,
+    IS_WaitForHexadecimalNumber,
+    IS_HexadecimalNumber,
 
-		IS_Suffix
-	};
+    IS_Suffix
+  };
 
-	InternalState mInternalState;
-	unsigned int mSuffixBits;
-	int mFirstLongSuffix;
-	std::string mRepresentation;
-	InternalState mBase;
-
-
-	virtual void internalInit();
+  InternalState mInternalState;
+  unsigned int mSuffixBits;
+  int mFirstLongSuffix;
+  std::string mRepresentation;
+  InternalState mBase;
 
 
-	virtual void internalUpdateToken(Token & token) const;
+  virtual void internalInit();
 
 
-
-	void checkOptionalSuffix(const int symbol);
+  virtual void internalUpdateToken(TokenPtr token) const;
 
 
 
-	void onWaitFirstSymbol(const int symbol);
+  void checkOptionalSuffix(const int symbol);
 
-	void onFirstSymbolWasZero(const int symbol);
 
-	void onDecimalNumber(const int symbol);
 
-	void onOctalNumber(const int symbol);
+  void onWaitFirstSymbol(const int symbol);
 
-	void onHexadecimalNumber(const int symbol);
+  void onFirstSymbolWasZero(const int symbol);
+
+  void onDecimalNumber(const int symbol);
+
+  void onOctalNumber(const int symbol);
+
+  void onHexadecimalNumber(const int symbol);
 
 };
 

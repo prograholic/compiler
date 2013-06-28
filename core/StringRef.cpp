@@ -3,35 +3,35 @@
 #include <boost/assert.hpp>
 
 StringRef::StringRef()
-	: mBuffer(),
-	  mFirst(0),
-	  mLast(0)
+  : mBuffer(),
+    mFirst(0),
+    mLast(0)
 {
 
 }
 
 StringRef::StringRef(StreamBufferPtr buffer)
-	: mBuffer(buffer),
-	  mFirst(0),
-	  mLast(0)
+  : mBuffer(buffer),
+    mFirst(0),
+    mLast(0)
 {
 }
 
 StringRef::StringRef(StreamBufferPtr buffer, size_t first)
-	: mBuffer(buffer),
-	  mFirst(first),
-	  mLast(first)
+  : mBuffer(buffer),
+    mFirst(first),
+    mLast(first)
 {
-	BOOST_ASSERT(mBuffer->size() >= mLast);
+  BOOST_ASSERT(mBuffer->size() >= mLast);
 }
 
 StringRef::StringRef(StreamBufferPtr buffer, size_t first, size_t last)
-	: mBuffer(buffer),
-	  mFirst(first),
-	  mLast(last)
+  : mBuffer(buffer),
+    mFirst(first),
+    mLast(last)
 {
-	BOOST_ASSERT(mLast >= mFirst);
-	BOOST_ASSERT(mBuffer->size() >= mLast);
+  BOOST_ASSERT(mLast >= mFirst);
+  BOOST_ASSERT(mBuffer->size() >= mLast);
 }
 
 
@@ -40,50 +40,50 @@ StringRef::StringRef(StreamBufferPtr buffer, size_t first, size_t last)
 
 StreamBufferPtr StringRef::buffer() const
 {
-	return mBuffer;
+  return mBuffer;
 }
 
 size_t StringRef::first() const
 {
-	return mFirst;
+  return mFirst;
 }
 
 size_t StringRef::last() const
 {
-	return mLast;
+  return mLast;
 }
 
 
 
 void StringRef::advance_front()
 {
-	++mFirst;
+  ++mFirst;
 
-	BOOST_ASSERT(mFirst <= mLast);
+  BOOST_ASSERT(mFirst <= mLast);
 }
 
 void StringRef::advance_back()
 {
-	++mLast;
+  ++mLast;
 
-	BOOST_ASSERT(mLast < mBuffer->size());
+  BOOST_ASSERT(mLast < mBuffer->size());
 }
 
 
 bool StringRef::empty() const
 {
-	return !mBuffer.get() || (mFirst == mLast);
+  return !mBuffer.get() || (mFirst == mLast);
 }
 
 
 std::string StringRef::toString() const
 {
-	if (StreamBuffer * buff = mBuffer.get())
-	{
-		return std::string(&buff->symbol(mFirst), &buff->symbol(mLast));
-	}
+  if (mBuffer)
+  {
+    return std::string(&mBuffer->symbol(mFirst), &mBuffer->symbol(mLast));
+  }
 
-	return std::string();
+  return std::string();
 }
 
 
@@ -92,26 +92,26 @@ std::string StringRef::toString() const
 
 bool operator == (const StringRef & left, const StringRef & right)
 {
-	if (left.buffer().get() != right.buffer().get())
-	{
-		return false;
-	}
+  if (left.buffer().get() != right.buffer().get())
+  {
+    return false;
+  }
 
-	if (left.first() != right.first())
-	{
-		return false;
-	}
+  if (left.first() != right.first())
+  {
+    return false;
+  }
 
-	if (left.last() != right.last())
-	{
-		return false;
-	}
+  if (left.last() != right.last())
+  {
+    return false;
+  }
 
-	return true;
+  return true;
 }
 
 
 bool operator != (const StringRef & left, const StringRef & right)
 {
-	return !(left == right);
+  return !(left == right);
 }

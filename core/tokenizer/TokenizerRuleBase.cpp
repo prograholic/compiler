@@ -1,11 +1,11 @@
 #include "core/tokenizer/TokenizerRuleBase.h"
 
 TokenizerRuleBase::TokenizerRuleBase(TokenType tokenType, TokenizerRulePriority priority)
-	: mInputStream(0),
-	  mCurrentState(TRS_Unknown),
-	  mTokenType(tokenType),
-	  mLastError(EC_NoError),
-	  mPriority(priority)
+  : mInputStream(0),
+    mCurrentState(TRS_Unknown),
+    mTokenType(tokenType),
+    mLastError(EC_NoError),
+    mPriority(priority)
 {
 }
 
@@ -15,49 +15,49 @@ TokenizerRuleBase::~TokenizerRuleBase()
 
 
 
-void TokenizerRuleBase::updateToken(Token & token) const
+void TokenizerRuleBase::updateToken(TokenPtr token) const
 {
-	token.type = mTokenType;
+  token->type = mTokenType;
 
-	token.lexeme = StringRef(mInputStream->buffer(),
-							 mInputStream->currentScopePosition(),
-							 mInputStream->currentPosition());
+  token->lexeme = StringRef(mInputStream->buffer(),
+               mInputStream->currentScopePosition(),
+               mInputStream->currentPosition());
 
-	internalUpdateToken(token);
+  internalUpdateToken(token);
 }
 
 TokenType TokenizerRuleBase::tokenType() const
 {
-	return mTokenType;
+  return mTokenType;
 }
 
 ErrorCodes TokenizerRuleBase::lastError() const
 {
-	return mLastError;
+  return mLastError;
 }
 
 
 TokenizerRulePriority TokenizerRuleBase::priority() const
 {
-	return mPriority;
+  return mPriority;
 }
 
 
 
 void TokenizerRuleBase::init(BufferedInputStream & inputStream)
 {
-	inputStream.markCurrentScope();
+  inputStream.markCurrentScope();
 
-	mInputStream = &inputStream;
-	mCurrentState = TRS_Unknown;
+  mInputStream = &inputStream;
+  mCurrentState = TRS_Unknown;
 
-	this->internalInit();
+  this->internalInit();
 }
 
 
 TokenizerRuleState TokenizerRuleBase::currentState()
 {
-	return mCurrentState;
+  return mCurrentState;
 }
 
 
@@ -72,7 +72,7 @@ void TokenizerRuleBase::internalInit()
 {
 }
 
-void TokenizerRuleBase::internalUpdateToken(Token & /* token */) const
+void TokenizerRuleBase::internalUpdateToken(TokenPtr /* token */) const
 {
 
 }

@@ -5,6 +5,7 @@
 
 #include <boost/smart_ptr/scoped_ptr.hpp>
 
+
 #include "core/StdInputStreamAdapter.h"
 #include "core/BufferedInputStream.h"
 
@@ -19,29 +20,29 @@ class CheckTokenizerRule : public ::testing::Test
 {
 public:
 
-	virtual void SetUp()
-	{
-		result = Token();
-	}
+  virtual void SetUp()
+  {
+    result = make_token();
+  }
 
 
-	BufferedInputStream & streamFromSample(const std::string & sample)
-	{
-		mInputStream.reset(new std::istringstream(sample));
-		mStdInputStreamAdapter.reset(new StdInputStreamAdapter(mInputStream.get()));
-		mBufferedInputStream.reset(new BufferedInputStream(*mStdInputStreamAdapter));
+  BufferedInputStream & streamFromSample(const std::string & sample)
+  {
+    mInputStream.reset(new std::istringstream(sample));
+    mStdInputStreamAdapter.reset(new StdInputStreamAdapter(mInputStream.get()));
+    mBufferedInputStream.reset(new BufferedInputStream(*mStdInputStreamAdapter));
 
-		return *mBufferedInputStream;
-	}
+    return *mBufferedInputStream;
+  }
 
-	Token result;
+  TokenPtr result;
 
 private:
 
 
-	boost::scoped_ptr<std::istringstream> mInputStream;
-	boost::scoped_ptr<StdInputStreamAdapter> mStdInputStreamAdapter;
-	boost::scoped_ptr<BufferedInputStream> mBufferedInputStream;
+  boost::scoped_ptr<std::istringstream> mInputStream;
+  boost::scoped_ptr<StdInputStreamAdapter> mStdInputStreamAdapter;
+  boost::scoped_ptr<BufferedInputStream> mBufferedInputStream;
 
 };
 

@@ -1,0 +1,21 @@
+#ifndef COMPILER_CORE_EXPRESSIONS_EXPRESSIONS_EXPRESSIONS_FWD_H
+#define COMPILER_CORE_EXPRESSIONS_EXPRESSIONS_EXPRESSIONS_FWD_H
+
+
+#include <boost/smart_ptr/shared_ptr.hpp>
+
+#define DECLARE_FWD_EXPRESSION_PTR(name) \
+  class name;\
+  typedef boost::shared_ptr<name> name ## Ptr
+
+
+
+DECLARE_FWD_EXPRESSION_PTR(ExpressionBase);
+DECLARE_FWD_EXPRESSION_PTR(BinaryExpression);
+DECLARE_FWD_EXPRESSION_PTR(BinaryPlusExpression);
+
+
+#undef DECLARE_FWD_EXPRESSION_PTR
+
+
+#endif // COMPILER_CORE_EXPRESSIONS_EXPRESSIONS_EXPRESSIONS_FWD_H

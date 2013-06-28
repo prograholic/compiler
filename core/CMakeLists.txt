@@ -31,3 +31,4 @@ add_library(compiler_core STATIC ${CompilerCoreSources})
 
 
 add_subdirectory(tokenizer)
+add_subdirectory(expressions)

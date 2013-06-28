@@ -10,17 +10,17 @@
 
 enum TokenizerRuleState
 {
-	TRS_Unknown,
-	TRS_Intermediate,
-	TRS_Finished,
-	TRS_Inapropriate
+  TRS_Unknown,
+  TRS_Intermediate,
+  TRS_Finished,
+  TRS_Inapropriate
 };
 
 
 enum TokenizerRulePriority
 {
-	TRR_Default,
-	TRR_High
+  TRR_Default,
+  TRR_High
 };
 
 
@@ -28,40 +28,40 @@ class TokenizerRuleBase : private boost::noncopyable
 {
 public:
 
-	TokenizerRuleBase(TokenType tokenType, TokenizerRulePriority priority = TRR_Default);
+  TokenizerRuleBase(TokenType tokenType, TokenizerRulePriority priority = TRR_Default);
 
-	virtual ~TokenizerRuleBase();
+  virtual ~TokenizerRuleBase();
 
 
-	TokenizerRuleState currentState();
+  TokenizerRuleState currentState();
 
-	void updateToken(Token & token) const;
+  void updateToken(TokenPtr token) const;
 
-	TokenType tokenType() const;
+  TokenType tokenType() const;
 
-	ErrorCodes lastError() const;
+  ErrorCodes lastError() const;
 
-	TokenizerRulePriority priority() const;
+  TokenizerRulePriority priority() const;
 
-	void init(BufferedInputStream & inputStream);
+  void init(BufferedInputStream & inputStream);
 
-	virtual TokenizerRuleState consumeSymbol() = 0;
+  virtual TokenizerRuleState consumeSymbol() = 0;
 
-	virtual bool firstSymbolFits(int firstSymbol) = 0;
+  virtual bool firstSymbolFits(int firstSymbol) = 0;
 
 
 protected:
 
-	BufferedInputStream * mInputStream;
+  BufferedInputStream * mInputStream;
 
-	TokenizerRuleState mCurrentState;
-	TokenType mTokenType;
-	ErrorCodes mLastError;
-	TokenizerRulePriority mPriority;
+  TokenizerRuleState mCurrentState;
+  TokenType mTokenType;
+  ErrorCodes mLastError;
+  TokenizerRulePriority mPriority;
 
-	virtual void internalInit();
+  virtual void internalInit();
 
-	virtual void internalUpdateToken(Token & token) const;
+  virtual void internalUpdateToken(TokenPtr token) const;
 
 };
 

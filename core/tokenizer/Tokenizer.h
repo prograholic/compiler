@@ -8,23 +8,23 @@
 class Tokenizer : private boost::noncopyable
 {
 public:
-	Tokenizer(const TokenizerRulesFacade & tokenizerRules, BufferedInputStream & inputStream);
+  Tokenizer(const TokenizerRulesFacade & tokenizerRules, BufferedInputStream & inputStream);
 
-	bool getNextToken(Token & token);
+  bool getNextToken(TokenPtr token);
 
-	Error lastError() const;
+  Error lastError() const;
 
 private:
 
-	BufferedInputStream & mInputStream;
+  BufferedInputStream & mInputStream;
 
-	TokenizerRulesFacade mTokenizerRules;
+  TokenizerRulesFacade mTokenizerRules;
 
-	Error mLastError;
+  Error mLastError;
 
-	bool returnWithError(ErrorCodes ec);
+  bool returnWithError(ErrorCodes ec);
 
-	bool processOneRule(int symbol, TokenizerRulePtr rule, Token & token);
+  bool processOneRule(int symbol, TokenizerRulePtr rule, TokenPtr token);
 
 };
 
