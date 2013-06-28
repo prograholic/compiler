@@ -4,7 +4,7 @@ project(compiler)
 
 
 find_package(Boost REQUIRED)
-
+include_directories(${Boost_INCLUDE_DIRS})
 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
